@@ -40,9 +40,38 @@ class Snake :
         self.bodys.append(self.head)
         self.tail = self.bodys[-1]
 
+    #move 메소드에서는 키보드 입력을 받아 뱀을 움직인다.
     def move(self) :
-        pass
-    
+        for event in pygame.event.get() :
+            if event.type == pygame.QUIT :
+                pygame.quit()
+            elif event.type == 'ESC' :
+                #show_ingame_menu
+                pass
+
+            keys = pygame.key.get_pressed()
+            for key in keys :
+                if keys['UP'] :
+                    self.turns[self.head.pos[:]] = 'u'
+                elif keys['DOWN'] :
+                    self.turns[self.head.pos[:]] = 'd'
+                elif keys['LEFT'] :
+                    self.turns[self.head.pos[:]] = 'l'
+                elif keys['RIGHT'] :
+                    self.turns[self.head.pos[:]] = 'r'
+                
+        for i, bloc in enumerate(self.bodys) :
+            p = bloc.pos
+            d = bloc.direction
+            if p in self.turns :
+                p = p + self.turns[p]
+                d = self.turns[p]
+                if i == len(self.bodys) - 1 :
+                    self.turns.pop(p)
+            else :
+                p = p + d
+
+
     #grow 메소드에서는 뱀이 사과를 먹으면 길이가 늘어나는 행동을 취한다. 참고한 코드와 다르게 현재 꼬리자리에 몸통을 한칸 만들고 꼬리를 진행방행과 반대 방향으로 한칸 민다.
     def grow(self) :
         if self.head == self.tail :
@@ -54,12 +83,12 @@ class Snake :
 
     #draw 메소드에서는 bodys의 각각의 요소들의 위치를 참고하여 창에 뱀을 그린다.
     def draw(self, window) :
-        for i, c in enumerate(self.bodys) :
+        for i, bloc in enumerate(self.bodys) :
             if i == 0 :
-                draw_block(window, c.pos, type = 'head')   #draw_block메소드 정의 필요 - def draw_block(배경, 위치, 타입(머리, 몸통)) <- 지원님 코드 스타일에 맞게 바꿀수 있습니다.
+                draw_block(window, bloc.pos, type = 'head')   #draw_block메소드 정의 필요 - def draw_block(배경, 위치, 타입(머리, 몸통)) <- 지원님 코드 스타일에 맞게 바꿀수 있습니다.
             #elif i == (len(self.bodys) - 1) :
             #    draw_block(window, c.pos, type = 'tail')  #추후 이미지 삽입시 머리, 몸통 꼬리로 나눌수 있다면 사용할 예정입니다.
             else :
-                draw_block(window, c.pos, type = 'body')
+                draw_block(window, bloc.pos, type = 'body')
 
     
