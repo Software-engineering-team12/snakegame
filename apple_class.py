@@ -24,9 +24,11 @@ class Apple:
 
     def draw(self):
         SCREEN.blit(self.apple, self.rect_apple)
+"""
+    def erase(self):
+        pygame.draw.rect(SCREEN, (255, 255, 255), self.rect_apple)
+"""
 
-    #def erase(self):
-        #pygame.draw.rect(SCREEN, (255, 255, 255), self.rect_apple)
 
     def position(self):
         self.rect_apple.x = B_size * random.randint(0, 41)
