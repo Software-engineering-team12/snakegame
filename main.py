@@ -6,11 +6,12 @@ from apple_class import Apple
 
 
 # 윈도우 크기
-WIDTH = 500
-HEIGHT = 500
+WIDTH = 800
+HEIGHT = 800
 # 행과 열의 수
-COLUMN = 25
-ROW = 25
+COLUMN = 40
+ROW = 40
+
 
 def drawGrid(screen):
     sizeBtwn = WIDTH // ROW
@@ -34,7 +35,7 @@ def update():
 
 
 def main():
-    global snake,screen,apple
+    global snake, screen, apple
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     snake = Snake((10, 10))
@@ -56,10 +57,9 @@ def main():
             snake.reset((10, 10))
             # flag=  False
 
-        if headPos[0] == appPos[0]//20 and headPos[1] == appPos[1]//20:
+        if headPos[0] == appPos[0] and headPos[1] == appPos[1]:
             snake.grow()
             apple.move()
-
 
         for x in range(1,len(snake.bodys)):
             if headPos[0] == snake.bodys[x].pos[0] and headPos[1] == snake.bodys[x].pos[1] :
@@ -67,11 +67,7 @@ def main():
                 snake.reset((10,10))
                 break
 
-
-
         update()
-
-
 
 
 if __name__ == '__main__':
