@@ -119,6 +119,7 @@ def runGame():
     while not done:
 
         clock.tick(10)
+
         print(snake.positions)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
