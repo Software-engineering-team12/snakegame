@@ -43,7 +43,7 @@ class Snake :
         self.rect_snake = self.head_image.get_rect()  # 이미지 크기와 동일한 사각형 객체 생성
 
     #reset 메소드에서는 게임을 다시 시작할 때 뱀을 초기상태로 되돌린다.
-    def reset(self, position) :
+    def reset(self, position):
         self.bodys = []
         self.turns = {}
         self.head = Snake.Body(position)
@@ -51,17 +51,17 @@ class Snake :
         self.tail = self.bodys[-1]
 
     #move 메소드에서는 키보드 입력을 받아 뱀을 움직인다.
-    def move(self) :
-        for event in pygame.event.get() :
-            if event.type == pygame.QUIT :
+    def move(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 pygame.quit()
             #elif event.type == KEY['ESC'] :
                 #show_ingame_menu
             #    pass
             keys = pygame.key.get_pressed()
 
-            for key in keys :
-                if keys[ KEY['UP'] ] :
+            for key in keys:
+                if keys[ KEY['UP'] ]:
                     self.turns[ tuple(self.head.pos[:]) ] = DIRECTION['u']
                 elif keys[ KEY['DOWN'] ] :
                     self.turns[ tuple(self.head.pos[:]) ] = DIRECTION['d']
@@ -70,13 +70,13 @@ class Snake :
                 elif keys[ KEY['RIGHT'] ] :
                     self.turns[ tuple(self.head.pos[:]) ] = DIRECTION['r']
                 
-        for i, bloc in enumerate(self.bodys) :
+        for i, bloc in enumerate(self.bodys):
             p = bloc.pos[:]
             d = bloc.direction
-            if tuple(p) in self.turns :
+            if tuple(p) in self.turns:
                 bloc.pos = p + self.turns[tuple(p)]
                 bloc.direction = self.turns[tuple(p)]
-                if i == len(self.bodys) - 1 :
+                if i == len(self.bodys) - 1:
                     self.turns.pop(tuple(p))
             else :
                 bloc.pos = p + d
@@ -84,7 +84,7 @@ class Snake :
 
     #main함수에서 grow 함수 동작시 문제 발생하여 주석 처리 해놨습니다.
     #grow 메소드에서는 뱀이 사과를 먹으면 길이가 늘어나는 행동을 취한다. 참고한 코드와 다르게 현재 꼬리자리에 몸통을 한칸 만들고 꼬리를 진행방행과 반대 방향으로 한칸 민다.
-    def grow(self) :
+    def grow(self):
         # if self.head == self.tail :
         self.bodys.append(Snake.Body(self.tail.pos - self.tail.direction, self.tail.direction))
         self.tail = self.bodys[-1]
@@ -93,7 +93,7 @@ class Snake :
         #     self.tail.pos = self.tail.pos - self.tail.direction
 
     #draw 메소드에서는 bodys의 각각의 요소들의 위치를 참고하여 창에 뱀을 그린다.
-    def draw(self, screen) :
+    def draw(self, screen):
         for i, bloc in enumerate(self.bodys):
             self.rect_snake.x = B_size * bloc.pos[0]  # 그려야하는 좌표의 위치에 snake 이미지 사이즈만큼의 사각형 객체 생성
             self.rect_snake.y = B_size * bloc.pos[1]

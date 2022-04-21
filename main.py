@@ -39,11 +39,10 @@ def main():
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     snake = Snake((10, 10))
-    apple = Apple()
+    apple = Apple((30,30), snake)
 
     flag = True
     clock = pygame.time.Clock()
-
 
     while flag:
         pygame.time.delay(50)
