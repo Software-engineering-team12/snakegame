@@ -63,7 +63,7 @@ def main():
 
         for x in range(1,len(snake.bodys)):
             if headPos[0] == snake.bodys[x].pos[0] and headPos[1] == snake.bodys[x].pos[1] :
-                print("Score connected:", len(snake.bodys))
+                print("Score :", len(snake.bodys))
                 snake.reset((10,10))
                 break
 
