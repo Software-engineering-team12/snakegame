@@ -2,6 +2,9 @@
 import pygame
 import numpy as np
 
+row = col = 40
+B_size = 20   # block size
+
 KEY = {
     'UP' : pygame.K_UP ,
     'DOWN' : pygame.K_DOWN,
@@ -16,11 +19,7 @@ DIRECTION = {
     'r' : np.array([1, 0]),
     'l' : np.array([-1, 0])
 }
-rows = 20
-def draw_block(screen, position, color=(255,255,0) ):
-    block = pygame.Rect((position[0] * rows, position[1] * rows),
-                        (rows, rows))
-    pygame.draw.rect(screen, color, block)
+
 
 class Snake :
     bodys = []
@@ -33,10 +32,15 @@ class Snake :
             self.direction = direction
 
     #생성자 : 뱀의 머리와 꼬리를 생성한다. 초기상태에서 뱀의 머리와 꼬리는 일치한다.
-    def __init__(self, position = np.array([20,20])) :
+    def __init__(self, position = np.array([20, 20])):
         self.head = Snake.Body(position)
         self.bodys.append(self.head)
         self.tail = self.bodys[-1]
+        self.head_image = pygame.image.load("image/head.png").convert_alpha()
+        self.head_image = pygame.transform.scale(self.head_image, (20, 20))
+        self.body_image = pygame.image.load("image/body.png").convert_alpha()
+        self.body_image = pygame.transform.scale(self.body_image, (20, 20))
+        self.rect_snake = self.head_image.get_rect()  # 이미지 크기와 동일한 사각형 객체 생성
 
     #reset 메소드에서는 게임을 다시 시작할 때 뱀을 초기상태로 되돌린다.
     def reset(self, position) :
@@ -90,11 +94,11 @@ class Snake :
 
     #draw 메소드에서는 bodys의 각각의 요소들의 위치를 참고하여 창에 뱀을 그린다.
     def draw(self, screen) :
-        for i, bloc in enumerate(self.bodys) :
-            if i == 0 :
-                draw_block(screen, bloc.pos)   #draw_block메소드 정의 필요 - def draw_block(배경, 위치, 타입(머리, 몸통)) <- 지원님 코드 스타일에 맞게 바꿀수 있습니다.
-            #elif i == (len(self.bodys) - 1) :
-            #    draw_block(window, c.pos, type = 'tail')  #추후 이미지 삽입시 머리, 몸통 꼬리로 나눌수 있다면 사용할 예정입니다.
-            else :
-                draw_block(screen, bloc.pos)
-                
+        for i, bloc in enumerate(self.bodys):
+            self.rect_snake.x = B_size * bloc.pos[0]  # 그려야하는 좌표의 위치에 snake 이미지 사이즈만큼의 사각형 객체 생성
+            self.rect_snake.y = B_size * bloc.pos[1]
+            if i == 0:   # 머리 부분 일 떄
+                screen.blit(self.head_image, self.rect_snake)
+
+            else:  # 몸통 부분일 때
+                screen.blit(self.body_image, self.rect_snake)
