@@ -28,12 +28,13 @@ class Snake :
     
     #Body클래스는 뱀의 몸통 한칸을 뜻하며 위치와 방향을 가지고 있다.
     class Body :
-        def __init__(self, position, direction = DIRECTION['u']) : 
+        def __init__(self,position, direction = DIRECTION['u']) :
             self.pos = position
             self.direction = direction
 
     #생성자 : 뱀의 머리와 꼬리를 생성한다. 초기상태에서 뱀의 머리와 꼬리는 일치한다.
-    def __init__(self, position = np.array([20,20])) :
+    def __init__(self, game, position = np.array([20,20])) :
+        self.game = game
         self.head = Snake.Body(position)
         self.bodys.append(self.head)
         self.tail = self.bodys[-1]
@@ -48,23 +49,24 @@ class Snake :
 
     #move 메소드에서는 키보드 입력을 받아 뱀을 움직인다.
     def move(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-            #elif event.type == KEY['ESC'] :
-                #show_ingame_menu
-            #    pass
-            keys = pygame.key.get_pressed()
 
-            for key in keys:
-                if keys[ KEY['UP'] ]:
-                    self.turns[ tuple(self.head.pos[:]) ] = DIRECTION['u']
-                elif keys[ KEY['DOWN'] ] :
-                    self.turns[ tuple(self.head.pos[:]) ] = DIRECTION['d']
-                elif keys[ KEY['LEFT'] ] :
-                    self.turns[ tuple(self.head.pos[:]) ] = DIRECTION['l']
-                elif keys[ KEY['RIGHT'] ] :
-                    self.turns[ tuple(self.head.pos[:]) ] = DIRECTION['r']
+        # for event in pygame.event.get():
+        #     if event.type == pygame.QUIT:
+        #         pygame.quit()
+        #     #elif event.type == KEY['ESC'] :
+        #         #show_ingame_menu
+        #     #    pass
+        #     keys = pygame.key.get_pressed()
+
+
+        if self.game.UP_KEY:
+            self.turns[ tuple(self.head.pos[:]) ] = DIRECTION['u']
+        elif self.game.DOWN_KEY:
+            self.turns[ tuple(self.head.pos[:]) ] = DIRECTION['d']
+        elif self.game.LEFT_KEY:
+            self.turns[ tuple(self.head.pos[:]) ] = DIRECTION['l']
+        elif self.game.RIGHT_KEY:
+            self.turns[ tuple(self.head.pos[:]) ] = DIRECTION['r']
                 
         for i, bloc in enumerate(self.bodys):
             p = bloc.pos[:]
