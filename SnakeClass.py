@@ -41,7 +41,7 @@ class Snake :
         self.head = Snake.Body(position)
         self.bodys.append(self.head)
         self.tail = self.bodys[-1]
-        self.head_image = pygame.image.load("image/head.png").convert_alpha()
+        self.head_image = pygame.image.load("image/up.png").convert_alpha()
         self.head_image = pygame.transform.scale(self.head_image, (20, 20))
         self.body_image = pygame.image.load("image/body.png").convert_alpha()
         self.body_image = pygame.transform.scale(self.body_image, (20, 20))
