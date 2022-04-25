@@ -1,5 +1,5 @@
 import pygame
-from menu import MainMenu
+from menu import MainMenu,InGameMenu
 from SnakeClass import Snake
 from apple_class import Apple
 
@@ -16,7 +16,8 @@ class Game():
         self.font_name = "font/8-BIT WONDER.TTF"
         self.BLACK, self.WHITE = (0, 0, 0), (255, 255, 255)
         self.curr_menu = MainMenu(self)
-
+        self.snake = Snake(self,(self.ROW/2, self.COLUMN/2))
+        self.apple = Apple((30,30),self.snake)
 
 
 ##############################################################
@@ -25,43 +26,48 @@ class Game():
 
     def game_loop(self):
 
-        snake = Snake(self,(10, 10))
-        apple = Apple((30, 30), snake)
+        # snake = self.snake
+        # apple = self.apple
         clock = pygame.time.Clock()
 
         while self.playing:
 
             self.check_events()
+
+            #Trigger InGame Menu
             if self.BACK_KEY:
-                print("Go back to main menu")
+                print("InGame Menu")
+                #Pause and InGame Menu
+                self.curr_menu = InGameMenu(self)
+                self.curr_menu.display_menu()
                 self.reset_keys()
-                self.playing = False
+
 
 
             pygame.time.delay(50)
             clock.tick(10)
-            snake.move()
-            headPos = snake.head.pos
-            appPos = apple.get_position()
+            self.snake.move()
+            headPos = self.snake.head.pos
+            appPos = self.apple.get_position()
 
             if headPos[0] >= self.ROW or headPos[0] < 0 or headPos[1] >= self.COLUMN or headPos[1] < 0:
-                print("Score:", len(snake.bodys))
-                snake.reset((10, 10))
+                print("Score:", len(self.snake.bodys))
+                self.snake.reset((self.ROW/2, self.COLUMN/2))
 
             if headPos[0] == appPos[0] and headPos[1] == appPos[1]:
-                snake.grow()
-                apple.move()
+                self.snake.grow()
+                self.apple.move()
 
-            for x in range(1, len(snake.bodys)):
-                if headPos[0] == snake.bodys[x].pos[0] and headPos[1] == snake.bodys[x].pos[1]:
-                    print("Score :", len(snake.bodys))
-                    snake.reset((10, 10))
+            for x in range(1, len(self.snake.bodys)):
+                if headPos[0] == self.snake.bodys[x].pos[0] and headPos[1] == self.snake.bodys[x].pos[1]:
+                    print("Score :", len(self.snake.bodys))
+                    self.snake.reset((self.ROW/2, self.COLUMN/2))
                     break
 
             self.display.fill((255, 255, 255))
             self.drawGrid()
-            snake.draw(self.display)
-            apple.draw(self.display)
+            self.snake.draw(self.display)
+            self.apple.draw(self.display)
             self.window.blit(self.display, (0, 0))
             pygame.display.update()
             self.reset_keys()
@@ -95,9 +101,9 @@ class Game():
     def reset_keys(self):
         self.UP_KEY, self.DOWN_KEY,self.LEFT_KEY,self.RIGHT_KEY, self.ENTER_KEY, self.BACK_KEY = False, False, False, False ,False, False
 
-    def draw_text(self, text, size, x, y):
+    def draw_text(self, text, size, x, y,color= (255,255,255)):
         font = pygame.font.Font(self.font_name, size)
-        text_surface = font.render(text, True, self.WHITE)
+        text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
         text_rect.center = (x, y)
         self.display.blit(text_surface, text_rect)
