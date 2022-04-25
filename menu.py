@@ -126,14 +126,14 @@ class InGameMenu(Menu):
                 self.cursor_rect.midtop = (self.savex + self.offset, self.savey)
                 self.state = "Save"
             elif self.state == "Save":
-                self.cursor_rect.midtop = (self.exitx + self.offset, self.exity)
+                self.cursor_rect.midtop = (self.exitx + self.offset * 2, self.exity)
                 self.state = "Exit"
             elif self.state == "Exit":
-                self.cursor_rect.midtop = (self.restartx + self.offset, self.restarty)
+                self.cursor_rect.midtop = (self.resumex + self.offset, self.resumey)
                 self.state = "Resume"
         elif self.game.UP_KEY:
             if self.state == "Resume":
-                self.cursor_rect.midtop = (self.exitx + self.offset, self.exity)
+                self.cursor_rect.midtop = (self.exitx + self.offset * 2, self.exity)
                 self.state = "Exit"
             elif self.state == "Restart":
                 self.cursor_rect.midtop = (self.resumex + self.offset, self.resumey)
