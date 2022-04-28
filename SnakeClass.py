@@ -2,6 +2,7 @@
 import pygame
 import numpy as np
 
+
 rows = 20
 B_size = 20
 

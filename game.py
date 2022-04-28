@@ -2,7 +2,7 @@ import pygame
 from menu import MainMenu,InGameMenu,ScoreMenu
 from SnakeClass import Snake
 from apple_class import Apple
-import time
+
 
 class Game():
     def __init__(self):

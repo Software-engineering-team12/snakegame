@@ -338,4 +338,3 @@ class RankMenu(Menu):
                 rank.append('empty')
         score_file.close()
         return rank
-
