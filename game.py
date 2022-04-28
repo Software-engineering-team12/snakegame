@@ -1,5 +1,5 @@
 import pygame
-from menu import MainMenu,InGameMenu
+from menu import MainMenu,InGameMenu,ScoreMenu
 from SnakeClass import Snake
 from apple_class import Apple
 
@@ -14,7 +14,7 @@ class Game():
         self.display = pygame.Surface((self.WIDTH,self.HEIGHT))
         self.window = pygame.display.set_mode((self.WIDTH,self.HEIGHT))
         self.font_name = "font/8-BIT WONDER.TTF"
-        self.BLACK, self.WHITE = (0, 0, 0), (255, 255, 255)
+        self.BLACK, self.WHITE, self.RED= (0, 0, 0), (255, 255, 255), (255,0,0)
         self.curr_menu = MainMenu(self)
         self.snake = Snake(self,(self.ROW/2, self.COLUMN/2))
         self.apple = Apple((30,30),self.snake)
@@ -51,8 +51,8 @@ class Game():
             appPos = self.apple.get_position()
 
             if headPos[0] >= self.ROW or headPos[0] < 0 or headPos[1] >= self.COLUMN or headPos[1] < 0:
-                print("Score:", len(self.snake.bodys))
-                self.snake.reset((self.ROW/2, self.COLUMN/2))
+                self.curr_menu = ScoreMenu(self)
+                self.curr_menu.display_score(len(self.snake.bodys))
 
             if headPos[0] == appPos[0] and headPos[1] == appPos[1]:
                 self.snake.grow()
@@ -60,8 +60,8 @@ class Game():
 
             for x in range(1, len(self.snake.bodys)):
                 if headPos[0] == self.snake.bodys[x].pos[0] and headPos[1] == self.snake.bodys[x].pos[1]:
-                    print("Score :", len(self.snake.bodys))
-                    self.snake.reset((self.ROW/2, self.COLUMN/2))
+                    self.curr_menu = ScoreMenu(self)
+                    self.curr_menu.display_score(len(self.snake.bodys))
                     break
 
             self.display.fill((255, 255, 255))
@@ -80,22 +80,16 @@ class Game():
                 self.curr_menu.run_display = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    print("enterkey pressed")
                     self.ENTER_KEY = True
                 if event.key == pygame.K_BACKSPACE:
-                    print("backkey pressed")
                     self.BACK_KEY = True
                 if event.key == pygame.K_DOWN:
-                    print("downkey pressed")
                     self.DOWN_KEY = True
                 if event.key == pygame.K_UP:
-                    print("upkey pressed")
                     self.UP_KEY = True
                 if event.key == pygame.K_LEFT:
-                    print("leftkey pressed")
                     self.LEFT_KEY = True
                 if event.key == pygame.K_RIGHT:
-                    print("rightkey pressed")
                     self.RIGHT_KEY = True
 
     def reset_keys(self):

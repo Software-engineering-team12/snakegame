@@ -162,3 +162,55 @@ class InGameMenu(Menu):
                 self.run_display = False
                 self.game.playing = False
 
+class ScoreMenu(Menu):
+        def __init__(self, game):
+            Menu.__init__(self, game)
+            self.state = "Restart"
+            self.restartx, self.restarty = self.mid_w, self.mid_h + 30
+            self.exitx, self.exity = self.mid_w, self.mid_h + 50
+            self.cursor_rect.midtop = (self.restartx + self.offset, self.restarty)
+
+
+        def display_score(self, score):
+            self.run_display =True
+            while self.run_display:
+                self.game.check_events()
+                self.check_input()
+                self.game.display.fill(self.game.WHITE)
+                self.game.draw_text("Your score is ", 20, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20,self.game.BLACK)
+                self.game.draw_text(str(score), 20, self.game.WIDTH / 2 + 130, self.game.HEIGHT / 2 - 20,self.game.RED)
+                self.game.draw_text("Restart", 20, self.restartx, self.restarty,self.game.BLACK)
+                self.game.draw_text("Return to Main Menu ", 20, self.exitx, self.exity,self.game.BLACK)
+                self.draw_cursor(self.game.BLACK)
+                self.blit_screen()
+
+
+        def move_cursor(self):
+
+            if self.game.DOWN_KEY:
+                if self.state == "Restart":
+                    self.cursor_rect.midtop = (self.exitx + self.offset * 2, self.exity)
+                    self.state = "Exit"
+                elif self.state == "Exit":
+                    self.cursor_rect.midtop = (self.restartx + self.offset, self.restarty)
+                    self.state = "Restart"
+            elif self.game.UP_KEY:
+                if self.state == "Restart":
+                    self.cursor_rect.midtop = (self.exitx + self.offset * 2, self.exity)
+                    self.state = "Exit"
+                elif self.state == "Exit":
+                    self.cursor_rect.midtop = (self.restartx + self.offset, self.restarty)
+                    self.state = "Restart"
+
+
+
+        def check_input(self):
+            self.move_cursor()
+            if self.game.ENTER_KEY:
+                if self.state == "Restart":
+                    self.game.snake.reset((self.game.ROW/2, self.game.COLUMN/2))
+                    self.run_display = False
+                elif self.state == "Exit":
+                    self.game.curr_menu = MainMenu(self.game)
+                    self.run_display = False
+                    self.game.playing = False
