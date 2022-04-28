@@ -1,6 +1,14 @@
 import sys
 
 import pygame
+# from game import Game
+
+"""
+try:  # score.txt 파일 있으면 읽고 없으면 생성
+    f = open('score.txt', 'r')
+except FileNotFoundError:
+    f = open('score.txt', 'w')
+"""
 
 
 class Menu():
@@ -84,6 +92,16 @@ class MainMenu(Menu):
                 self.game.playing = True
             elif self.state == "Load":
                 print("Load state")
+                load_file = open('game_file.txt', 'r')
+                load_game = list(load_file.read().split(':'))
+                # load_keys = tuple(load_game[0])
+                load_snake = load_game[1].replace('(', "")
+                load_apple = tuple(map(int, (load_game[2].split())))
+                print(load_game)
+                print(load_snake)
+                print(load_apple)
+                self.game.snake.reset()
+
             elif self.state == "Ranking":
                 print("Ranking state")
             elif self.state == "Exit":
@@ -156,7 +174,11 @@ class InGameMenu(Menu):
                 self.game.snake.reset((self.game.ROW/2, self.game.COLUMN/2))
                 self.run_display = False
             elif self.state == "Save":
-                pass
+                game_file = open('game_file.txt', 'w')
+                game_file.write(str(self.game.get_keys()) + ':')
+                game_file.write(str(self.game.get_snake()) + ':')
+                game_file.write(str(self.game.get_apple()[0]) + " " + str(self.game.get_apple()[1]))
+
             elif self.state == "Exit":
                 self.game.curr_menu = MainMenu(self.game)
                 self.run_display = False

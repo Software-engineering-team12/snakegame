@@ -2,6 +2,7 @@ import pygame
 from menu import MainMenu,InGameMenu,ScoreMenu
 from SnakeClass import Snake
 from apple_class import Apple
+import time
 
 class Game():
     def __init__(self):
@@ -51,6 +52,7 @@ class Game():
             appPos = self.apple.get_position()
 
             if headPos[0] >= self.ROW or headPos[0] < 0 or headPos[1] >= self.COLUMN or headPos[1] < 0:
+                self.store_score(len(self.snake.bodys))
                 self.curr_menu = ScoreMenu(self)
                 self.curr_menu.display_score(len(self.snake.bodys))
 
@@ -60,6 +62,7 @@ class Game():
 
             for x in range(1, len(self.snake.bodys)):
                 if headPos[0] == self.snake.bodys[x].pos[0] and headPos[1] == self.snake.bodys[x].pos[1]:
+                    self.store_score(len(self.snake.bodys))
                     self.curr_menu = ScoreMenu(self)
                     self.curr_menu.display_score(len(self.snake.bodys))
                     break
@@ -113,6 +116,46 @@ class Game():
             # 그리드 그리기
             pygame.draw.line(self.display, (0, 0, 0), (x, 0), (x, self.WIDTH)) # 세로 줄
             pygame.draw.line(self.display, (0, 0, 0), (0, y), (self.HEIGHT, y)) # 가로 줄
+
+
+    def store_score(self, score):
+        try:
+            score_file = open('score.txt', 'r')  # score 파일 있으면 열고 없으면 생성
+        except FileNotFoundError:
+            score_file = open('score.txt', 'w')
+            score_file.close()
+            score_file = open('score.txt', 'r')
+
+        score_list = score_file.read()
+        print(score_list)
+        if len(score_list):
+            score_list = list(map(int, score_list.replace('[', '').replace(']', '').split(', ')))
+        else:
+            score_list = []
+
+        score_file.close()
+        score_list.append(score)
+        score_list.sort(reverse=True)
+        print(score_list)
+
+        score_file = open('score.txt', 'w')
+        score_file.write(str(score_list))
+        score_file.close()
+
+
+    def get_bodys(self):
+        return self.snake.bodys
+
+    def get_keys(self):
+        return
+    def get_turns(self):
+        print(self.snake.get_turns())
+        return self.snake.get_turns()
+
+    def get_apple(self):
+        return self.apple.get_position()
+
+
 
     #
     # def update(self):
