@@ -36,36 +36,11 @@ class Apple:
             self.rect_apple.y = random.randint(0, 39)
             flag = False
             for i in self.snake.bodys:
-<<<<<<< HEAD
                 if (i.pos[0], i.pos[1]) == self.get_position():                                             # 뱀의 위치와 같은 곳에 사과 생성 되면 다시 사과 위치 조정
                     flag = True                                                                             # 뱀과 위치 겹치면 while문 반복
-=======
-                if (i.pos[0], i.pos[1]) == self.get_position():   # 뱀의 위치와 같은 곳에 사과 생성 되면 다시 사과 위치 조정
-                    flag = True     # 뱀과 위치 겹치면 while문 반복
->>>>>>> fa43efbc8531589bdb78b10449d0ba7fffc76cbb
 
     def get_position(self):
         return self.rect_apple.x, self.rect_apple.y
 
     def set_position(self, position):
         self.rect_apple.x, self.rect_apple.y = position
-<<<<<<< HEAD
-=======
-
-# test
-# pygame.init()
-# apple = Apple()
-# apple.draw()
-# pygame.display.flip()
-# time.sleep(5)
-#
-# while True:
-#     apple.erase()
-#     apple.move()
-#     apple.draw()
-#     pygame.display.flip()
-#     time.sleep(5)
-#
-#
-
->>>>>>> fa43efbc8531589bdb78b10449d0ba7fffc76cbb
