@@ -1,7 +1,6 @@
 import pygame
 import random
 import SnakeClass
-import numpy as np
 
 row = col = 40
 B_size = 20   # block size

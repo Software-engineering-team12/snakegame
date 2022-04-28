@@ -146,8 +146,7 @@ class Game():
     def get_bodys(self):
         return self.snake.bodys
 
-    def get_keys(self):
-        return
+
     def get_turns(self):
         print(self.snake.get_turns())
         return self.snake.get_turns()
