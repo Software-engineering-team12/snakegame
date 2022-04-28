@@ -36,7 +36,7 @@ class Apple:
             self.rect_apple.y = random.randint(0, 39)
             flag = False
             for i in self.snake.bodys:
-                if (i.pos[0], i.pos[1]) == self.get_position():   # 뱀의 위치와 같은 곳에 사과 생성되면 다시 사과 위치 조정
+                if (i.pos[0], i.pos[1]) == self.get_position():   # 뱀의 위치와 같은 곳에 사과 생성 되면 다시 사과 위치 조정
                     flag = True     # 뱀과 위치 겹치면 while문 반복
 
     def get_position(self):
