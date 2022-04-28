@@ -2,6 +2,7 @@
 import pygame
 import numpy as np
 
+
 rows = 20
 B_size = 20
 
@@ -123,11 +124,10 @@ class Snake:
         h = save_body.pop(0)
         head = Snake.Body(np.array([h[0], h[1]]), np.array([h[2], h[3]]))
         self.bodys[0] = head
+        self.head = self.bodys[0]
+        self.tail = self.bodys[-1]
+
         for i in save_body:
-            self.bodys.append(Snake.Body(np.array([i[0], i[1]]), np.array([i[2], i[3]])))
-
-    def set_turns(self, save_turns):
-        self.turns[tuple(self.head.pos[:])] = np.array(save_turns)
-
-    def get_turns(self):
-        return tuple(self.key)
+            self.bodys.append(Snake.Body(self.tail.pos - self.tail.direction, self.tail.direction))
+            self.tail = self.bodys[-1]
+            print(self.tail.pos,self.tail.direction)

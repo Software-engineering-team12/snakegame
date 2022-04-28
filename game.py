@@ -2,7 +2,7 @@ import pygame
 from menu import MainMenu,InGameMenu,ScoreMenu
 from SnakeClass import Snake
 from apple_class import Apple
-import time
+
 
 class Game():
     def __init__(self):
@@ -27,8 +27,6 @@ class Game():
 
     def game_loop(self):
 
-        # snake = self.snake
-        # apple = self.apple
         clock = pygame.time.Clock()
 
         while self.playing:
@@ -113,14 +111,15 @@ class Game():
         for l in range(self.ROW):
             x = x + sizeBtwn
             y = y + sizeBtwn
+            
             # 그리드 그리기
-            pygame.draw.line(self.display, (0, 0, 0), (x, 0), (x, self.WIDTH)) # 세로 줄
-            pygame.draw.line(self.display, (0, 0, 0), (0, y), (self.HEIGHT, y)) # 가로 줄
+            pygame.draw.line(self.display, (0, 0, 0), (x, 0), (x, self.WIDTH))                      # 세로 줄
+            pygame.draw.line(self.display, (0, 0, 0), (0, y), (self.HEIGHT, y))                     # 가로 줄
 
 
     def store_score(self, score):
         try:
-            score_file = open('score.txt', 'r')  # score 파일 있으면 열고 없으면 생성
+            score_file = open('score.txt', 'r')                                                     # score 파일 있으면 열고 없으면 생성
         except FileNotFoundError:
             score_file = open('score.txt', 'w')
             score_file.close()
@@ -153,52 +152,3 @@ class Game():
 
     def get_apple(self):
         return self.apple.get_position()
-
-
-
-    #
-    # def update(self):
-    #
-    #     self.display.fill((255, 255, 255))
-    #     self.drawGrid(screen)
-    #     snake.draw(screen)
-    #     apple.draw(screen)
-    #     pygame.display.update()
-
-
-    # def playgame(self):
-    #
-    #     snake = Snake((10, 10))
-    #     apple = Apple((30,30), snake)
-    #     clock = pygame.time.Clock()
-    #
-    #     while self.playing:
-    #
-    #         pygame.time.delay(50)
-    #         clock.tick(10)
-    #         snake.move()
-    #         headPos = snake.head.pos
-    #         appPos = apple.get_position()
-    #
-    #         if headPos[0] >= self.ROW or headPos[0] < 0 or headPos[1] >= self.COLUMN or headPos[1] < 0:
-    #             print("Score:", len(snake.bodys))
-    #             snake.reset((10, 10))
-    #
-    #
-    #         if headPos[0] == appPos[0] and headPos[1] == appPos[1]:
-    #             snake.grow()
-    #             apple.move()
-    #
-    #         for x in range(1,len(snake.bodys)):
-    #             if headPos[0] == snake.bodys[x].pos[0] and headPos[1] == snake.bodys[x].pos[1] :
-    #                 print("Score :", len(snake.bodys))
-    #                 snake.reset((10,10))
-    #                 break
-    #
-    #
-    #         self.display.fill((255, 255, 255))
-    #         self.drawGrid()
-    #         snake.draw(self.display)
-    #         apple.draw(self.display)
-    #         self.window.blit(self.display, (0, 0))
-    #         pygame.display.update()
