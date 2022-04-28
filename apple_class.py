@@ -42,6 +42,8 @@ class Apple:
     def get_position(self):
         return self.rect_apple.x, self.rect_apple.y
 
+    def set_position(self, position):
+        self.rect_apple.x, self.rect_apple.y = position
 
 # test
 # pygame.init()
