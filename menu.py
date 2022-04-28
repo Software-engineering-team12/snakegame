@@ -82,18 +82,41 @@ class MainMenu(Menu):
                 self.game.playing = True
             elif self.state == "Load":
                 save_bodys = []
+<<<<<<< HEAD
                 print("Load state")
                 load_file = open('game_file.txt', 'r')
                 load_game = list(load_file.read().split('\n'))
+=======
+                save_turns = []
+                print("Load state")
+                load_file = open('game_file.txt', 'r')
+                load_game = list(load_file.read().split('\n'))
+                # load_keys = tuple(load_game[0])
+>>>>>>> fa43efbc8531589bdb78b10449d0ba7fffc76cbb
                 load_apple = tuple(map(int, load_game[0].split()))
                 snake_size = int(load_game[1])
                 for i in range(snake_size):
                     save_bodys.append(list(map(int, load_game[i + 2].split())))
 
+<<<<<<< HEAD
                 self.game.apple.set_position(load_apple)
 
                 self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
                 self.game.snake.set_body(save_bodys)
+=======
+                load_turns = tuple(map(int, load_game[-1].split()))
+
+                # print(load_game)
+                # print(load_snake)
+                # print(load_apple)
+                # print(load_snake[0])
+                self.game.apple.set_position(load_apple)
+
+                # self.game.snake.reset()
+                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                self.game.snake.set_body(save_bodys)
+                self.game.snake.set_turns(load_turns)
+>>>>>>> fa43efbc8531589bdb78b10449d0ba7fffc76cbb
                 self.game.playing = True
 
                 load_file.close()
@@ -172,11 +195,21 @@ class InGameMenu(Menu):
                 self.run_display = False
             elif self.state == "Save":
                 game_file = open('game_file.txt', 'w')
+<<<<<<< HEAD
+=======
+                #game_file.write(str(self.game.get_keys()) + '\n')
+>>>>>>> fa43efbc8531589bdb78b10449d0ba7fffc76cbb
                 game_file.write(str(self.game.get_apple()[0]) + " " + str(self.game.get_apple()[1]) + '\n')
                 game_file.write(str(len(self.game.get_bodys())) + '\n')
                 for i in self.game.get_bodys():
                     game_file.write("{0} {1} {2} {3}\n".format(int(i.pos[0]), int(i.pos[1]), int(i.direction[0]),
                                                                int(i.direction[1])))
+<<<<<<< HEAD
+=======
+
+                game_file.write("{0} {1}\n".format(self.game.get_turns()[0], self.game.get_turns()[1]))
+
+>>>>>>> fa43efbc8531589bdb78b10449d0ba7fffc76cbb
                 game_file.close()
 
                 self.game.curr_menu = MainMenu(self.game)
@@ -283,7 +316,11 @@ class RankMenu(Menu):
         elif self.game.UP_KEY:
             if self.state == "Start":
                 self.cursor_rect.midtop = (self.menux + self.offset, self.menuy)
+<<<<<<< HEAD
                 self.state = "Menu"
+=======
+                self.state = "Eenu"
+>>>>>>> fa43efbc8531589bdb78b10449d0ba7fffc76cbb
             elif self.state == "Exit":
                 self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
                 self.state = "Start"
@@ -305,7 +342,11 @@ class RankMenu(Menu):
 
     def get_ranking(self):
         try:
+<<<<<<< HEAD
             score_file = open('score.txt', 'r')                                             # score 파일 있으면 열고 없으면 생성
+=======
+            score_file = open('score.txt', 'r')  # score 파일 있으면 열고 없으면 생성
+>>>>>>> fa43efbc8531589bdb78b10449d0ba7fffc76cbb
         except FileNotFoundError:
             score_file = open('score.txt', 'w')
             score_file.close()
@@ -323,4 +364,8 @@ class RankMenu(Menu):
             while len(rank) != 5:
                 rank.append('empty')
         score_file.close()
+<<<<<<< HEAD
         return rank
+=======
+        return rank
+>>>>>>> fa43efbc8531589bdb78b10449d0ba7fffc76cbb
