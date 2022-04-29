@@ -1,0 +1,33 @@
+a:visited {
+    color:purple;
+    text-decoration-line: none;
+}
+a {
+  text-decoration-line: none;
+}
+
+@font-face {
+
+      src : url("../font/8-BIT WONDER.TTF");
+
+      font-family: "jua"
+
+}
+
+
+body{
+    font-family: "jua";
+    text-align: center;
+}
+table{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+h1{
+    color:red;
+}
+h3{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
