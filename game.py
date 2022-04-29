@@ -20,7 +20,7 @@ class Game():
         self.snake = Snake(self,(self.ROW/2, self.COLUMN/2))
         self.apple = Apple((30,30),self.snake)
         self.name = "PLAYER"
-
+        self.background = pygame.image.load("image/cau.png").convert_alpha()
 
 ##############################################################
                        #play game#
@@ -42,23 +42,25 @@ class Game():
                 self.reset_keys()
 
 
-
             pygame.time.delay(50)
             clock.tick(10)
             self.snake.move()
             headPos = self.snake.head.pos
             appPos = self.apple.get_position()
 
+            #뱀이 맵 밖으로 나갔을 때 처리
             if headPos[0] >= self.ROW or headPos[0] < 0 or headPos[1] >= self.COLUMN or headPos[1] < 0:
                 self.store_score(len(self.snake.bodys))
                 self.curr_menu = ScoreMenu(self)
                 self.name = self.curr_menu.input_name()
                 self.curr_menu.display_score(len(self.snake.bodys))
 
+            #뱀이 사과를 먹었을 때 처리
             if headPos[0] == appPos[0] and headPos[1] == appPos[1]:
                 self.snake.grow()
                 self.apple.move()
 
+            #뱀이 자기 몸과 닿았을 때 처리
             for x in range(1, len(self.snake.bodys)):
                 if headPos[0] == self.snake.bodys[x].pos[0] and headPos[1] == self.snake.bodys[x].pos[1]:
                     self.store_score(len(self.snake.bodys))
@@ -106,17 +108,18 @@ class Game():
         self.display.blit(text_surface, text_rect)
 
     def drawGrid(self):
+
         sizeBtwn = self.WIDTH // self.ROW
         x = 0
         y = 0
         for l in range(self.ROW):
             x = x + sizeBtwn
             y = y + sizeBtwn
-            
-            # 그리드 그리기
-            pygame.draw.line(self.display, (0, 0, 0), (x, 0), (x, self.WIDTH))                      # 세로 줄
-            pygame.draw.line(self.display, (0, 0, 0), (0, y), (self.HEIGHT, y))                     # 가로 줄
 
+            # 그리드 그리기
+            pygame.draw.line(self.display, (160, 188, 194), (x, 0), (x, self.WIDTH))                      # 세로 줄
+            pygame.draw.line(self.display, (160, 188, 194), (0, y), (self.HEIGHT, y))                     # 가로 줄
+        self.display.blit(self.background, (200, 250))
 
     def store_score(self, score):
         try:

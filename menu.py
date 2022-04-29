@@ -1,5 +1,4 @@
 import sys
-
 import pygame
 
 
@@ -80,6 +79,8 @@ class MainMenu(Menu):
                 self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
                 self.game.apple.set_position(position=(30,30))
                 self.game.playing = True
+                self.run_display = False
+
             elif self.state == "Load":
                 save_bodys = []
                 load_file = open('game_file.txt', 'r')
@@ -96,16 +97,18 @@ class MainMenu(Menu):
                 self.game.playing = True
 
                 load_file.close()
+                self.run_display = False
 
             elif self.state == "Ranking":
                 self.game.curr_menu = RankMenu(self.game)
                 self.game.curr_menu.display_menu()
                 self.game.reset_keys()
+                self.run_display = False
 
             elif self.state == "Exit":
+                self.run_display = False
                 pygame.quit()
                 sys.exit()
-            self.run_display = False
 
 
 class InGameMenu(Menu):
@@ -281,11 +284,11 @@ class RankMenu(Menu):
             self.check_input()
             self.game.display.fill(self.game.WHITE)
             self.game.draw_text("TOP Ranking", 30, self.rankx, self.ranky, self.game.RED)
-            self.game.draw_text("%s" % rank[0], 20, self.rankx, self.ranky+40, self.game.BLACK)
-            self.game.draw_text("%s" % rank[1], 20, self.rankx, self.ranky + 60, self.game.BLACK)
-            self.game.draw_text("%s" % rank[2], 20, self.rankx, self.ranky + 80, self.game.BLACK)
-            self.game.draw_text("%s" % rank[3], 20, self.rankx, self.ranky + 100, self.game.BLACK)
-            self.game.draw_text("%s" % rank[4], 20, self.rankx, self.ranky + 120, self.game.BLACK)
+            self.game.draw_text("1st %s" % rank[0], 20, self.rankx, self.ranky+40, self.game.BLACK)
+            self.game.draw_text("2nd %s" % rank[1], 20, self.rankx, self.ranky + 60, self.game.BLACK)
+            self.game.draw_text("3rd %s" % rank[2], 20, self.rankx, self.ranky + 80, self.game.BLACK)
+            self.game.draw_text("4th %s" % rank[3], 20, self.rankx, self.ranky + 100, self.game.BLACK)
+            self.game.draw_text("5th %s" % rank[4], 20, self.rankx, self.ranky + 120, self.game.BLACK)
             self.game.draw_text("Menu", 25, self.menux, self.menuy, self.game.BLACK)
             self.game.draw_text("Start", 20, self.startx, self.starty, self.game.BLACK)
             self.game.draw_text("Exit", 20, self.exitx, self.exity, self.game.BLACK)
