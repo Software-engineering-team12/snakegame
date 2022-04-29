@@ -82,7 +82,6 @@ class MainMenu(Menu):
                 self.game.playing = True
             elif self.state == "Load":
                 save_bodys = []
-                print("Load state")
                 load_file = open('game_file.txt', 'r')
                 load_game = list(load_file.read().split('\n'))
                 load_apple = tuple(map(int, load_game[0].split()))
@@ -316,8 +315,6 @@ class RankMenu(Menu):
             rank = list(rank.replace('[', '').replace(']', '').replace(',', '').split())
         else:
             rank = []
-
-        print(rank)
 
         if len(rank)<5:
             while len(rank) != 5:

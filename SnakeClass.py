@@ -30,7 +30,10 @@ class Snake:
         self.head = Snake.Body(position)
         self.bodys.append(self.head)
         self.tail = self.bodys[-1]
+        self.load_img()
 
+    # load_img메소드는 snake의 머리, 몸통, 꼬리에 해당하는 이미지파일을 불러온다
+    def load_img(self) :
         self.head_up = pygame.image.load("image/head_up.png").convert_alpha()
         self.head_up = pygame.transform.scale(self.head_up, (20, 20))
         self.head_down = pygame.image.load("image/head_down.png").convert_alpha()
@@ -130,4 +133,3 @@ class Snake:
         for i in save_body:
             self.bodys.append(Snake.Body(self.tail.pos - self.tail.direction, self.tail.direction))
             self.tail = self.bodys[-1]
-            print(self.tail.pos,self.tail.direction)

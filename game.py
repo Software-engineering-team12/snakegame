@@ -35,7 +35,6 @@ class Game():
 
             #Trigger InGame Menu
             if self.BACK_KEY:
-                print("InGame Menu")
                 #Pause and InGame Menu
                 self.curr_menu = InGameMenu(self)
                 self.curr_menu.display_menu()
@@ -126,7 +125,6 @@ class Game():
             score_file = open('score.txt', 'r')
 
         score_list = score_file.read()
-        print(score_list)
         if len(score_list):
             score_list = list(map(int, score_list.replace('[', '').replace(']', '').split(', ')))
         else:
@@ -135,7 +133,6 @@ class Game():
         score_file.close()
         score_list.append(score)
         score_list.sort(reverse=True)
-        print(score_list)
 
         score_file = open('score.txt', 'w')
         score_file.write(str(score_list))
@@ -147,7 +144,6 @@ class Game():
 
 
     def get_turns(self):
-        print(self.snake.get_turns())
         return self.snake.get_turns()
 
     def get_apple(self):
