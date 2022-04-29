@@ -15,10 +15,11 @@ class Game():
         self.display = pygame.Surface((self.WIDTH,self.HEIGHT))
         self.window = pygame.display.set_mode((self.WIDTH,self.HEIGHT))
         self.font_name = "font/8-BIT WONDER.TTF"
-        self.BLACK, self.WHITE, self.RED= (0, 0, 0), (255, 255, 255), (255,0,0)
+        self.BLACK, self.WHITE, self.RED, self.BLUE= (0, 0, 0), (255, 255, 255), (255,0,0), (0, 0, 255)
         self.curr_menu = MainMenu(self)
         self.snake = Snake(self,(self.ROW/2, self.COLUMN/2))
         self.apple = Apple((30,30),self.snake)
+        self.name = "PLAYER"
 
 
 ##############################################################
@@ -51,6 +52,7 @@ class Game():
             if headPos[0] >= self.ROW or headPos[0] < 0 or headPos[1] >= self.COLUMN or headPos[1] < 0:
                 self.store_score(len(self.snake.bodys))
                 self.curr_menu = ScoreMenu(self)
+                self.name = self.curr_menu.input_name()
                 self.curr_menu.display_score(len(self.snake.bodys))
 
             if headPos[0] == appPos[0] and headPos[1] == appPos[1]:
@@ -61,6 +63,7 @@ class Game():
                 if headPos[0] == self.snake.bodys[x].pos[0] and headPos[1] == self.snake.bodys[x].pos[1]:
                     self.store_score(len(self.snake.bodys))
                     self.curr_menu = ScoreMenu(self)
+                    self.name = self.curr_menu.input_name()
                     self.curr_menu.display_score(len(self.snake.bodys))
                     break
 
@@ -101,7 +104,6 @@ class Game():
         text_rect = text_surface.get_rect()
         text_rect.center = (x, y)
         self.display.blit(text_surface, text_rect)
-
 
     def drawGrid(self):
         sizeBtwn = self.WIDTH // self.ROW

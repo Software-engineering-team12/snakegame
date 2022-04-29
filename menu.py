@@ -210,6 +210,29 @@ class ScoreMenu(Menu):
             self.draw_cursor(self.game.BLACK)
             self.blit_screen()
 
+    def input_name(self) :
+        self.run_display = True
+        temp = ''
+        while self.run_display:
+            self.game.display.fill(self.game.WHITE)
+            self.game.draw_text("what is your name ", 20, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 40, self.game.BLACK)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running, self.playing = False, False
+                    self.curr_menu.run_display = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        self.run_display = False
+                        return temp
+                    elif event.key == pygame.K_BACKSPACE:
+                        temp = temp[:-1]
+                    else:
+                        temp += event.unicode
+
+            self.game.draw_text(temp, 20, self.game.WIDTH / 2, self.game.HEIGHT / 2, self.game.BLUE)
+            self.blit_screen()
+
     def move_cursor(self):
 
         if self.game.DOWN_KEY:
@@ -237,6 +260,7 @@ class ScoreMenu(Menu):
                 self.game.curr_menu = MainMenu(self.game)
                 self.run_display = False
                 self.game.playing = False
+                
 
 
 class RankMenu(Menu):
