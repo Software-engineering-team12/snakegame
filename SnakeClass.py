@@ -131,5 +131,4 @@ class Snake:
         self.tail = self.bodys[-1]
 
         for i in save_body:
-            self.bodys.append(Snake.Body(self.tail.pos - self.tail.direction, self.tail.direction))
-            self.tail = self.bodys[-1]
+            self.grow()
