@@ -204,7 +204,7 @@ class ScoreMenu(Menu):
             self.check_input()
             self.game.display.fill(self.game.WHITE)
             self.game.draw_text("Your score is ", 20, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20, self.game.BLACK)
-            self.game.draw_text(str(score), 20, self.game.WIDTH / 2 + 130, self.game.HEIGHT / 2 - 20, self.game.RED)
+            self.game.draw_text(str(score), 20, self.game.WIDTH / 2 + 140, self.game.HEIGHT / 2 - 20, self.game.RED)
             self.game.draw_text("Restart", 20, self.restartx, self.restarty, self.game.BLACK)
             self.game.draw_text("Return to Main Menu ", 20, self.exitx, self.exity, self.game.BLACK)
             self.draw_cursor(self.game.BLACK)
