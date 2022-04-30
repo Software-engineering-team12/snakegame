@@ -1,1 +1,1 @@
-['b', 'aaa', 'a', 'bb', 'kk', 'bbb', 's']
+['b', 'aaa', 'a', 'cha', 'bb', 'kk', 'qqqq', 'bbb', 'chan', '\\x1bassa', 's']
