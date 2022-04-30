@@ -21,8 +21,8 @@ ___
 ##<center>Use ⇦ ⇧ ⇨ ⇩ </center>
 
 
-<center><img src="/image/head_up.png" width="50" height="50" ></center> 
-<center><img src="/image/grade.png" width="50" height="50" ></center> 
+<center><img src="/img/head_up.png" width="50" height="50" ></center> 
+<center><img src="/img/grade.png" width="50" height="50" ></center> 
 
 
 ##Don't Bump in WALL

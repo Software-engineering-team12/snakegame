@@ -8,7 +8,7 @@ B_size = 23   # block size
 
 class Apple:
     def __init__(self, position=(30, 30), snake=SnakeClass.Snake):
-        self.apple = pygame.image.load("image/grade.png").convert_alpha()
+        self.apple = pygame.image.load("img/grade.png").convert_alpha()
         self.apple = pygame.transform.scale(self.apple, (23, 23))
         self.rect_apple = self.apple.get_rect()                                         # 이미지 크기와 동일한 사각형 객체 생성
         self.rect_apple.x = position[0]

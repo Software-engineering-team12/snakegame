@@ -20,7 +20,7 @@ class Game():
         self.snake = Snake(self, (self.ROW/2, self.COLUMN/2))
         self.apple = Apple((30, 30), self.snake)
         self.name = "PLAYER"
-        self.background = pygame.image.load("image/cau.png").convert_alpha()
+        self.background = pygame.image.load("img/cau.png").convert_alpha()
 
 ##############################################################
                        #play game#

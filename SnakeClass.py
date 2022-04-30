@@ -34,25 +34,25 @@ class Snake:
 
     # load_img메소드는 snake의 머리, 몸통, 꼬리에 해당하는 이미지파일을 불러온다
     def load_img(self) :
-        self.head_up = pygame.image.load("image/head_up.png").convert_alpha()
+        self.head_up = pygame.image.load("img/head_up.png").convert_alpha()
         self.head_up = pygame.transform.scale(self.head_up, (23, 23))
-        self.head_down = pygame.image.load("image/head_down.png").convert_alpha()
+        self.head_down = pygame.image.load("img/head_down.png").convert_alpha()
         self.head_down = pygame.transform.scale(self.head_down, (23, 23))
-        self.head_left = pygame.image.load("image/head_left.png").convert_alpha()
+        self.head_left = pygame.image.load("img/head_left.png").convert_alpha()
         self.head_left = pygame.transform.scale(self.head_left, (23, 23))
-        self.head_right = pygame.image.load("image/head_right.png").convert_alpha()
+        self.head_right = pygame.image.load("img/head_right.png").convert_alpha()
         self.head_right = pygame.transform.scale(self.head_right, (23, 23))
 
-        self.tail_up = pygame.image.load("image/tail_up.png").convert_alpha()
+        self.tail_up = pygame.image.load("img/tail_up.png").convert_alpha()
         self.tail_up = pygame.transform.scale(self.tail_up, (23, 23))
-        self.tail_down = pygame.image.load("image/tail_down.png").convert_alpha()
+        self.tail_down = pygame.image.load("img/tail_down.png").convert_alpha()
         self.tail_down = pygame.transform.scale(self.tail_down, (23, 23))
-        self.tail_left = pygame.image.load("image/tail_left.png").convert_alpha()
+        self.tail_left = pygame.image.load("img/tail_left.png").convert_alpha()
         self.tail_left = pygame.transform.scale(self.tail_left, (23, 23))
-        self.tail_right = pygame.image.load("image/tail_right.png").convert_alpha()
+        self.tail_right = pygame.image.load("img/tail_right.png").convert_alpha()
         self.tail_right = pygame.transform.scale(self.tail_right, (23, 23))
 
-        self.body_image = pygame.image.load("image/body.png").convert_alpha()
+        self.body_image = pygame.image.load("img/body.png").convert_alpha()
         self.body_image = pygame.transform.scale(self.body_image, (23, 23))
         self.rect_snake = self.body_image.get_rect()
 
