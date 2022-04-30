@@ -35,7 +35,7 @@ class MainMenu(Menu):
             self.game.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
-            self.game.draw_text("Main Menu", 20, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20)
+            self.game.draw_text("Main Menu", 30, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20)
             self.game.draw_text("Start Game", 20, self.startx, self.starty)
             self.game.draw_text("Load", 20, self.loadx, self.loady)
             self.game.draw_text("Ranking", 20, self.rankingx, self.rankingy)
@@ -127,7 +127,7 @@ class InGameMenu(Menu):
             self.game.check_events()
             self.check_input()
             self.game.display.fill(self.game.WHITE)
-            self.game.draw_text("InGame Menu", 20, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20, self.game.BLACK)
+            self.game.draw_text("InGame Menu", 30, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20, self.game.BLACK)
             self.game.draw_text("Resume", 20, self.resumex, self.resumey, self.game.BLACK)
             self.game.draw_text("Restart", 20, self.restartx, self.restarty, self.game.BLACK)
             self.game.draw_text("Save", 20, self.savex, self.savey, self.game.BLACK)
@@ -265,86 +265,70 @@ class ScoreMenu(Menu):
                 self.game.playing = False
                 
 
-
 class RankMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
         self.state = "Menu"
-        self.rankx, self.ranky = self.mid_w, self.mid_h-150
-        self.menux, self.menuy = self.mid_w + 220, self.mid_h + 260
-        self.startx, self.starty = self.mid_w + 220, self.mid_h + 290
+        self.rankx, self.ranky = self.mid_w, self.mid_h-120
+        #self.menux, self.menuy = self.mid_w + 220, self.mid_h + 260
+        #self.startx, self.starty = self.mid_w + 220, self.mid_h + 290
         self.exitx, self.exity = self.mid_w + 220, self.mid_h + 310
-        self.cursor_rect.midtop = (self.menux + self.offset, self.menuy)
+        self.cursor_rect.midtop = (self.exitx + self.offset, self.exity)
 
     def display_menu(self):
         self.run_display = True
-        rank = self.get_ranking()
+        name, score = self.get_ranking()
         while self.run_display:
-            self.game.check_events()
-            self.check_input()
             self.game.display.fill(self.game.WHITE)
             self.game.draw_text("TOP Ranking", 30, self.rankx, self.ranky, self.game.RED)
-            self.game.draw_text("1st %s" % rank[0], 20, self.rankx, self.ranky+40, self.game.BLACK)
-            self.game.draw_text("2nd %s" % rank[1], 20, self.rankx, self.ranky + 60, self.game.BLACK)
-            self.game.draw_text("3rd %s" % rank[2], 20, self.rankx, self.ranky + 80, self.game.BLACK)
-            self.game.draw_text("4th %s" % rank[3], 20, self.rankx, self.ranky + 100, self.game.BLACK)
-            self.game.draw_text("5th %s" % rank[4], 20, self.rankx, self.ranky + 120, self.game.BLACK)
-            self.game.draw_text("Menu", 25, self.menux, self.menuy, self.game.BLACK)
-            self.game.draw_text("Start", 20, self.startx, self.starty, self.game.BLACK)
+            self.game.draw_text("1st  %s  %s" % (name[0], score[0]), 20, self.rankx, self.ranky+40, self.game.BLACK)
+            self.game.draw_text("2nd  %s  %s" % (name[1], score[1]), 20, self.rankx, self.ranky + 60, self.game.BLACK)
+            self.game.draw_text("3rd  %s  %s" % (name[2], score[2]), 20, self.rankx, self.ranky + 80, self.game.BLACK)
+            self.game.draw_text("4th  %s  %s" % (name[3], score[3]), 20, self.rankx, self.ranky + 100, self.game.BLACK)
+            self.game.draw_text("5th  %s  %s" % (name[4], score[4]), 20, self.rankx, self.ranky + 120, self.game.BLACK)
+            #self.game.draw_text("Menu", 25, self.menux, self.menuy, self.game.BLACK)
+            #self.game.draw_text("Start", 20, self.startx, self.starty, self.game.BLACK)
             self.game.draw_text("Exit", 20, self.exitx, self.exity, self.game.BLACK)
             self.draw_cursor(self.game.BLACK)
             self.blit_screen()
-
-    def move_cursor(self):
-        if self.game.DOWN_KEY:
-            if self.state == "Start":
-                self.cursor_rect.midtop = (self.exitx + self.offset, self.exity)
-                self.state = "Exit"
-            elif self.state == "Exit":
-                self.cursor_rect.midtop = (self.menux + self.offset, self.menuy)
-                self.state = "Menu"
-            else:
-                self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
-                self.state = "Start"
-        elif self.game.UP_KEY:
-            if self.state == "Start":
-                self.cursor_rect.midtop = (self.menux + self.offset, self.menuy)
-                self.state = "Menu"
-            elif self.state == "Exit":
-                self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
-                self.state = "Start"
-            else:
-                self.cursor_rect.midtop = (self.exitx + self.offset, self.exity)
-                self.state = "Exit"
+            self.game.check_events()
+            self.check_input()
 
     def check_input(self):
-        self.move_cursor()
+        #self.move_cursor()
         if self.game.ENTER_KEY:
-            if self.state == "Start":
-                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
-                self.game.playing = True
-                self.run_display = False
-            elif self.state == "Exit":
-                self.game.curr_menu = MainMenu(self.game)
-                self.run_display = False
-                self.game.playing = False
+            self.game.curr_menu = MainMenu(self.game)
+            self.run_display = False
+            self.game.playing = False
 
     def get_ranking(self):
         try:
-            score_file = open('score.txt', 'r')                                             # score 파일 있으면 열고 없으면 생성
+            score_file = open('score.txt', 'r')  # score 파일 있으면 열고 없으면 생성
         except FileNotFoundError:
             score_file = open('score.txt', 'w')
             score_file.close()
             score_file = open('score.txt', 'r')
 
-        rank = score_file.read()
-        if len(rank) !=0:
-            rank = list(rank.replace('[', '').replace(']', '').replace(',', '').split())
-        else:
-            rank = []
+        try:
+            name_file = open('name.txt', 'r')  # name 파일 있으면 열고 없으면 생성
+        except FileNotFoundError:
+            name_file = open('name.txt', 'w')
+            name_file.close()
+            name_file = open('name.txt', 'r')
 
-        if len(rank)<5:
-            while len(rank) != 5:
-                rank.append('empty')
+        score = score_file.read()
+        name = name_file.read()
+        if len(score) !=0:
+            score = list(score.replace('[', '').replace(']', '').replace(',', '').split())
+            name = list(name.replace('[', '').replace(']', '').replace(',', '').replace('\'', '').split())
+        else:
+            score = []
+            name = []
+
+        if len(score) < 5:
+            while len(score) != 5:
+                score.append(' ')
+                name.append('empty')
         score_file.close()
-        return rank
+        name_file.close()
+        return name, score

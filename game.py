@@ -50,10 +50,10 @@ class Game():
 
             #뱀이 맵 밖으로 나갔을 때 처리
             if headPos[0] >= self.ROW or headPos[0] < 0 or headPos[1] >= self.COLUMN or headPos[1] < 0:
-                self.store_score(len(self.snake.bodys))
                 self.curr_menu = ScoreMenu(self)
                 self.name = self.curr_menu.input_name()
-                self.curr_menu.display_score(len(self.snake.bodys))
+                self.store_score(len(self.snake.bodys)-1)
+                self.curr_menu.display_score(len(self.snake.bodys)-1)
 
             #뱀이 사과를 먹었을 때 처리
             if headPos[0] == appPos[0] and headPos[1] == appPos[1]:
@@ -63,10 +63,10 @@ class Game():
             #뱀이 자기 몸과 닿았을 때 처리
             for x in range(1, len(self.snake.bodys)):
                 if headPos[0] == self.snake.bodys[x].pos[0] and headPos[1] == self.snake.bodys[x].pos[1]:
-                    self.store_score(len(self.snake.bodys))
                     self.curr_menu = ScoreMenu(self)
                     self.name = self.curr_menu.input_name()
-                    self.curr_menu.display_score(len(self.snake.bodys))
+                    self.store_score(len(self.snake.bodys)-1)
+                    self.curr_menu.display_score(len(self.snake.bodys)-1)
                     break
 
             self.display.fill((255, 255, 255))
@@ -129,24 +129,42 @@ class Game():
             score_file.close()
             score_file = open('score.txt', 'r')
 
+        try:
+            name_file = open('name.txt', 'r')                                                     # name 파일 있으면 열고 없으면 생성
+        except FileNotFoundError:
+            name_file = open('name.txt', 'w')
+            name_file.close()
+            name_file = open('name.txt', 'r')
+
         score_list = score_file.read()
-        if len(score_list):
+        name_list = name_file.read()
+        dict_name = {}
+        if len(score_list):                                                       # 파일에서 불러온 정보 리스트로 저장
             score_list = list(map(int, score_list.replace('[', '').replace(']', '').split(', ')))
+            name_list = list(name_list.replace('[', '').replace(']', '').replace('\'', '').split(', '))
         else:
             score_list = []
+            name_list = []
 
+        for i in range(len(score_list)):                                          # 이름과 점수 딕셔너리로 저장
+            dict_name[name_list[i]] = score_list[i]
+
+        dict_name[self.name] = score
         score_file.close()
-        score_list.append(score)
-        score_list.sort(reverse=True)
+        name_file.close()
+        dict_name = dict(sorted(dict_name.items(), key=lambda x: x[1], reverse=True))             # 점수 기준으로 내림차순 정릴시키기
+        score_list = list(dict_name.values())                                                # 정렬된 점수들 다시 score_list에 저장
+        name_list = list(dict_name.keys())                                                   # 점수 기준 정렬된 이름 다시 name_list에 저장
 
         score_file = open('score.txt', 'w')
+        name_file = open('name.txt', 'w')
         score_file.write(str(score_list))
+        name_file.write(str(name_list))
         score_file.close()
-
+        name_file.close()
 
     def get_bodys(self):
         return self.snake.bodys
-
 
     def get_turns(self):
         return self.snake.get_turns()
