@@ -116,7 +116,7 @@ class Game():
             # 그리드 그리기
             pygame.draw.line(self.display, (160, 188, 194), (x, 0), (x, self.WIDTH))                      # 세로 줄
             pygame.draw.line(self.display, (160, 188, 194), (0, y), (self.HEIGHT, y))                     # 가로 줄
-        self.display.blit(self.background, (200, 250))
+        self.display.blit(self.background, (270, 330))
 
     def store_score(self, score):
         try:
