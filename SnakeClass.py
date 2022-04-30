@@ -3,7 +3,7 @@ import pygame
 import numpy as np
 
 
-B_size = 20
+B_size = 23
 
 DIRECTION = {
     'u': np.array([0, -1]),
@@ -11,6 +11,7 @@ DIRECTION = {
     'r': np.array([1, 0]),
     'l': np.array([-1, 0])
 }
+
 
 class Snake:
     bodys = []
@@ -34,25 +35,25 @@ class Snake:
     # load_img메소드는 snake의 머리, 몸통, 꼬리에 해당하는 이미지파일을 불러온다
     def load_img(self) :
         self.head_up = pygame.image.load("image/head_up.png").convert_alpha()
-        self.head_up = pygame.transform.scale(self.head_up, (20, 20))
+        self.head_up = pygame.transform.scale(self.head_up, (23, 23))
         self.head_down = pygame.image.load("image/head_down.png").convert_alpha()
-        self.head_down = pygame.transform.scale(self.head_down, (20, 20))
+        self.head_down = pygame.transform.scale(self.head_down, (23, 23))
         self.head_left = pygame.image.load("image/head_left.png").convert_alpha()
-        self.head_left = pygame.transform.scale(self.head_left, (20, 20))
+        self.head_left = pygame.transform.scale(self.head_left, (23, 23))
         self.head_right = pygame.image.load("image/head_right.png").convert_alpha()
-        self.head_right = pygame.transform.scale(self.head_right, (20, 20))
+        self.head_right = pygame.transform.scale(self.head_right, (23, 23))
 
         self.tail_up = pygame.image.load("image/tail_up.png").convert_alpha()
-        self.tail_up = pygame.transform.scale(self.tail_up, (20, 20))
+        self.tail_up = pygame.transform.scale(self.tail_up, (23, 23))
         self.tail_down = pygame.image.load("image/tail_down.png").convert_alpha()
-        self.tail_down = pygame.transform.scale(self.tail_down, (20, 20))
+        self.tail_down = pygame.transform.scale(self.tail_down, (23, 23))
         self.tail_left = pygame.image.load("image/tail_left.png").convert_alpha()
-        self.tail_left = pygame.transform.scale(self.tail_left, (20, 20))
+        self.tail_left = pygame.transform.scale(self.tail_left, (23, 23))
         self.tail_right = pygame.image.load("image/tail_right.png").convert_alpha()
-        self.tail_right = pygame.transform.scale(self.tail_right, (20, 20))
+        self.tail_right = pygame.transform.scale(self.tail_right, (23, 23))
 
         self.body_image = pygame.image.load("image/body.png").convert_alpha()
-        self.body_image = pygame.transform.scale(self.body_image, (20, 20))
+        self.body_image = pygame.transform.scale(self.body_image, (23, 23))
         self.rect_snake = self.body_image.get_rect()
 
     # reset 메소드에서는 게임을 다시 시작할 때 뱀을 초기상태로 되돌린다.
@@ -100,23 +101,23 @@ class Snake:
             self.rect_snake.x = B_size * bloc.pos[0]                                                        # 그려야하는 좌표의 위치에 snake 이미지 사이즈만큼의 사각형 객체 생성
             self.rect_snake.y = B_size * bloc.pos[1]
             if i == 0:                                                                                      # 머리 부분 일 떄
-                if np.array_equiv(bloc.direction,DIRECTION['u']) :
+                if np.array_equiv(bloc.direction, DIRECTION['u']):
                     screen.blit(self.head_up, self.rect_snake)
-                elif np.array_equiv(bloc.direction,DIRECTION['d']) :
+                elif np.array_equiv(bloc.direction, DIRECTION['d']):
                     screen.blit(self.head_down, self.rect_snake)
-                elif np.array_equiv(bloc.direction,DIRECTION['l']) :
+                elif np.array_equiv(bloc.direction, DIRECTION['l']):
                     screen.blit(self.head_left, self.rect_snake)
-                elif np.array_equiv(bloc.direction,DIRECTION['r']) :
+                elif np.array_equiv(bloc.direction, DIRECTION['r']):
                     screen.blit(self.head_right, self.rect_snake)
 
             elif i == self.bodys.index(self.tail):                                                          # 꼬리 부분 일 떄
-                if np.array_equiv(bloc.direction,DIRECTION['u']) :
+                if np.array_equiv(bloc.direction, DIRECTION['u']):
                     screen.blit(self.tail_up, self.rect_snake)
-                elif np.array_equiv(bloc.direction,DIRECTION['d']) :
+                elif np.array_equiv(bloc.direction, DIRECTION['d']):
                     screen.blit(self.tail_down, self.rect_snake)
-                elif np.array_equiv(bloc.direction,DIRECTION['l']) :
+                elif np.array_equiv(bloc.direction, DIRECTION['l']):
                     screen.blit(self.tail_left, self.rect_snake)
-                elif np.array_equiv(bloc.direction,DIRECTION['r']) :
+                elif np.array_equiv(bloc.direction, DIRECTION['r']):
                     screen.blit(self.tail_right, self.rect_snake)
 
             else:                                                                                           # 몸통 부분일 때

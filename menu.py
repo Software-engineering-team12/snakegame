@@ -7,7 +7,7 @@ class Menu():
         self.game = game
         self.mid_w, self.mid_h = self.game.WIDTH / 2, self.game.HEIGHT / 2
         self.run_display = True
-        self.cursor_rect = pygame.Rect(0, 0, 20, 20)
+        self.cursor_rect = pygame.Rect(0, 0, 23, 23)
         self.offset = - 100
 
     def draw_cursor(self, color=(255, 255, 255)):
@@ -185,7 +185,6 @@ class InGameMenu(Menu):
                 self.run_display = False
                 self.game.playing = False
 
-
             elif self.state == "Exit":
                 self.game.curr_menu = MainMenu(self.game)
                 self.run_display = False
@@ -270,8 +269,6 @@ class RankMenu(Menu):
         Menu.__init__(self, game)
         self.state = "Menu"
         self.rankx, self.ranky = self.mid_w, self.mid_h-120
-        #self.menux, self.menuy = self.mid_w + 220, self.mid_h + 260
-        #self.startx, self.starty = self.mid_w + 220, self.mid_h + 290
         self.exitx, self.exity = self.mid_w + 220, self.mid_h + 310
         self.cursor_rect.midtop = (self.exitx + self.offset, self.exity)
 
@@ -286,8 +283,6 @@ class RankMenu(Menu):
             self.game.draw_text("3rd  %s  %s" % (name[2], score[2]), 20, self.rankx, self.ranky + 80, self.game.BLACK)
             self.game.draw_text("4th  %s  %s" % (name[3], score[3]), 20, self.rankx, self.ranky + 100, self.game.BLACK)
             self.game.draw_text("5th  %s  %s" % (name[4], score[4]), 20, self.rankx, self.ranky + 120, self.game.BLACK)
-            #self.game.draw_text("Menu", 25, self.menux, self.menuy, self.game.BLACK)
-            #self.game.draw_text("Start", 20, self.startx, self.starty, self.game.BLACK)
             self.game.draw_text("Exit", 20, self.exitx, self.exity, self.game.BLACK)
             self.draw_cursor(self.game.BLACK)
             self.blit_screen()
@@ -295,7 +290,6 @@ class RankMenu(Menu):
             self.check_input()
 
     def check_input(self):
-        #self.move_cursor()
         if self.game.ENTER_KEY:
             self.game.curr_menu = MainMenu(self.game)
             self.run_display = False

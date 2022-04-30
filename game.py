@@ -8,17 +8,17 @@ class Game():
     def __init__(self):
         pygame.init()
 
-        self.playing,self.running = False,True
-        self.UP_KEY,self.DOWN_KEY,self.LEFT_KEY,self.RIGHT_KEY,self.BACK_KEY,self.ENTER_KEY = False,False,False,False,False,False
-        self.WIDTH,self.HEIGHT = 800,800
-        self.COLUMN,self.ROW = 40,40
-        self.display = pygame.Surface((self.WIDTH,self.HEIGHT))
-        self.window = pygame.display.set_mode((self.WIDTH,self.HEIGHT))
+        self.playing, self.running = False, True
+        self.UP_KEY, self.DOWN_KEY, self.LEFT_KEY, self.RIGHT_KEY, self.BACK_KEY, self.ENTER_KEY = False, False, False, False, False, False
+        self.WIDTH, self.HEIGHT = 920, 920
+        self.COLUMN, self.ROW = 40, 40
+        self.display = pygame.Surface((self.WIDTH, self.HEIGHT))
+        self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         self.font_name = "font/8-BIT WONDER.TTF"
-        self.BLACK, self.WHITE, self.RED, self.BLUE= (0, 0, 0), (255, 255, 255), (255,0,0), (0, 0, 255)
+        self.BLACK, self.WHITE, self.RED, self.BLUE = (0, 0, 0), (255, 255, 255), (255, 0, 0), (0, 0, 255)
         self.curr_menu = MainMenu(self)
-        self.snake = Snake(self,(self.ROW/2, self.COLUMN/2))
-        self.apple = Apple((30,30),self.snake)
+        self.snake = Snake(self, (self.ROW/2, self.COLUMN/2))
+        self.apple = Apple((30, 30), self.snake)
         self.name = "PLAYER"
         self.background = pygame.image.load("image/cau.png").convert_alpha()
 
@@ -40,7 +40,6 @@ class Game():
                 self.curr_menu = InGameMenu(self)
                 self.curr_menu.display_menu()
                 self.reset_keys()
-
 
             pygame.time.delay(50)
             clock.tick(10)
@@ -77,7 +76,6 @@ class Game():
             pygame.display.update()
             self.reset_keys()
 
-
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -98,9 +96,9 @@ class Game():
                     self.RIGHT_KEY = True
 
     def reset_keys(self):
-        self.UP_KEY, self.DOWN_KEY,self.LEFT_KEY,self.RIGHT_KEY, self.ENTER_KEY, self.BACK_KEY = False, False, False, False ,False, False
+        self.UP_KEY, self.DOWN_KEY, self.LEFT_KEY, self.RIGHT_KEY, self.ENTER_KEY, self.BACK_KEY = False, False, False, False ,False, False
 
-    def draw_text(self, text, size, x, y,color= (255,255,255)):
+    def draw_text(self, text, size, x, y, color=(255, 255, 255)):
         font = pygame.font.Font(self.font_name, size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
@@ -108,7 +106,6 @@ class Game():
         self.display.blit(text_surface, text_rect)
 
     def drawGrid(self):
-
         sizeBtwn = self.WIDTH // self.ROW
         x = 0
         y = 0
@@ -139,20 +136,20 @@ class Game():
         score_list = score_file.read()
         name_list = name_file.read()
         dict_name = {}
-        if len(score_list):                                                       # 파일에서 불러온 정보 리스트로 저장
+        if len(score_list):                                                                 # 파일에서 불러온 정보 리스트로 저장
             score_list = list(map(int, score_list.replace('[', '').replace(']', '').split(', ')))
             name_list = list(name_list.replace('[', '').replace(']', '').replace('\'', '').split(', '))
         else:
             score_list = []
             name_list = []
 
-        for i in range(len(score_list)):                                          # 이름과 점수 딕셔너리로 저장
+        for i in range(len(score_list)):                                                    # 이름과 점수 딕셔너리로 저장
             dict_name[name_list[i]] = score_list[i]
 
         dict_name[self.name] = score
         score_file.close()
         name_file.close()
-        dict_name = dict(sorted(dict_name.items(), key=lambda x: x[1], reverse=True))             # 점수 기준으로 내림차순 정릴시키기
+        dict_name = dict(sorted(dict_name.items(), key=lambda x: x[1], reverse=True))         # 점수 기준으로 내림차순 정릴시키기
         score_list = list(dict_name.values())                                                # 정렬된 점수들 다시 score_list에 저장
         name_list = list(dict_name.keys())                                                   # 점수 기준 정렬된 이름 다시 name_list에 저장
 
