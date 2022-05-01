@@ -35,7 +35,9 @@
 ## How to Install?
 <br>
   
-  ##### Please download .zip file
+  ##### Please download the zip file from the homepage
+  
+  [=>link](https://software-engineering-team12.github.io/snakegame/)
   <br>
 
 ---
