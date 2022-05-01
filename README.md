@@ -27,8 +27,13 @@
   Please help PUANG collect A+ using the direction key on the keyboard.
 
   The more A+ you collect, the richer the students' grades become. <br><br>
+  [푸앙이](https://www.cau.ac.kr/cms/FR_CON/index.do?MENU_ID=2540)
+  
   <img src="/img/head_up.png" width="50" height="50" >
-    <img src="/img/grade.png" width="50" height="50" >
+  
+  [A+](https://www.vecteezy.com/vector-art/554137-a-grade-text-graphic)
+  
+  <img src="/img/grade.png" width="50" height="50" >
    <br><br>   
   
   - - - 
