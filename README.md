@@ -69,7 +69,7 @@
     - When the game is over, the nickname input window appears. Enter a nickname to save your score and nickname.
   <br>
 
-  ### 3. When you press the ESE key while the game is in progress
+  ### 3. When you press the ES key while the game is in progress
   The Ingame Menu appears<br>
   
     * RESUME 
