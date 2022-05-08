@@ -76,8 +76,10 @@ class MainMenu(Menu):
         self.move_cursor()
         if self.game.ENTER_KEY:
             if self.state == "Start":
-                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
-                self.game.apple.set_position(position=(30,30))
+                self.game.snake1.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                self.game.apple1.set_position(position=(30, 30))
+                self.game.snake2.reset((self.game.ROW / 4, self.game.COLUMN / 4))
+                self.game.apple2.set_position(position=(20, 20))
                 self.game.playing = True
                 self.run_display = False
 
@@ -90,10 +92,10 @@ class MainMenu(Menu):
                 for i in range(snake_size):
                     save_bodys.append(list(map(int, load_game[i + 2].split())))
 
-                self.game.apple.set_position(load_apple)
+                self.game.apple1.set_position(load_apple)
 
-                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
-                self.game.snake.set_body(save_bodys)
+                self.game.snake1.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                self.game.snake1.set_body(save_bodys)
                 self.game.playing = True
 
                 load_file.close()
@@ -170,7 +172,8 @@ class InGameMenu(Menu):
             if self.state == "Resume":
                 self.run_display = False
             elif self.state == "Restart":
-                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                self.game.snake1.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                self.game.snake2.reset((self.game.ROW / 4, self.game.COLUMN / 4))
                 self.run_display = False
             elif self.state == "Save":
                 game_file = open('game_file.txt', 'w')
@@ -256,7 +259,8 @@ class ScoreMenu(Menu):
         self.move_cursor()
         if self.game.ENTER_KEY:
             if self.state == "Restart":
-                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                self.game.snake1.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                self.game.snake2.reset((self.game.ROW / 4, self.game.COLUMN / 4))
                 self.run_display = False
             elif self.state == "Exit":
                 self.game.curr_menu = MainMenu(self.game)

@@ -8,7 +8,7 @@ class Game():
     def __init__(self):
         pygame.init()
 
-        self.playing, self.running = False, True
+        self.playing, self.dual_playing ,self.running = False,False, True
         self.UP_KEY, self.DOWN_KEY, self.LEFT_KEY, self.RIGHT_KEY, self.BACK_KEY,self.W_KEY,self.A_KEY,self.S_KEY,self.D_KEY, self.ENTER_KEY = False, False, False, False,False, False, False, False, False, False
         self.WIDTH, self.HEIGHT = 920, 920
         self.COLUMN, self.ROW = 40, 40
@@ -17,8 +17,10 @@ class Game():
         self.font_name = "font/8-BIT WONDER.TTF"
         self.BLACK, self.WHITE, self.RED, self.BLUE = (0, 0, 0), (255, 255, 255), (255, 0, 0), (0, 0, 255)
         self.curr_menu = MainMenu(self)
-        self.snake = Snake(self, (self.ROW/2, self.COLUMN/2))
-        self.apple = Apple((30, 30), self.snake)
+        self.snake1 = Snake(self, (self.ROW / 2, self.COLUMN / 2))
+        self.apple1 = Apple((30, 30), self.snake1)
+        self.snake2 = Snake(self, (self.ROW/4, self.COLUMN/4))
+        self.apple2 = Apple((20, 20), self.snake2)
         self.name = "PLAYER"
         self.background = pygame.image.load("img/cau.png").convert_alpha()
 
@@ -43,35 +45,144 @@ class Game():
 
             pygame.time.delay(50)
             clock.tick(10)
-            self.snake.move()
-            headPos = self.snake.head.pos
-            appPos = self.apple.get_position()
+            self.snake1.move_1P()
+
+
+            headPos = self.snake1.head.pos
+            appPos = self.apple1.get_position()
 
             #뱀이 맵 밖으로 나갔을 때 처리
             if headPos[0] >= self.ROW or headPos[0] < 0 or headPos[1] >= self.COLUMN or headPos[1] < 0:
                 self.curr_menu = ScoreMenu(self)
                 self.name = self.curr_menu.input_name()
-                self.store_score(len(self.snake.bodys)-1)
-                self.curr_menu.display_score(len(self.snake.bodys)-1)
+                self.store_score(len(self.snake1.bodys) - 1)
+                self.curr_menu.display_score(len(self.snake1.bodys) - 1)
 
             #뱀이 사과를 먹었을 때 처리
             if headPos[0] == appPos[0] and headPos[1] == appPos[1]:
-                self.snake.grow()
-                self.apple.move()
+                self.snake1.grow()
+                self.apple1.move()
 
             #뱀이 자기 몸과 닿았을 때 처리
-            for x in range(1, len(self.snake.bodys)):
-                if headPos[0] == self.snake.bodys[x].pos[0] and headPos[1] == self.snake.bodys[x].pos[1]:
+            for x in range(1, len(self.snake1.bodys)):
+                if headPos[0] == self.snake1.bodys[x].pos[0] and headPos[1] == self.snake1.bodys[x].pos[1]:
                     self.curr_menu = ScoreMenu(self)
                     self.name = self.curr_menu.input_name()
-                    self.store_score(len(self.snake.bodys)-1)
-                    self.curr_menu.display_score(len(self.snake.bodys)-1)
+                    self.store_score(len(self.snake1.bodys) - 1)
+                    self.curr_menu.display_score(len(self.snake1.bodys) - 1)
+                    break
+
+
+
+
+            self.display.fill((255, 255, 255))
+            self.drawGrid()
+            self.snake1.draw(self.display)
+            self.apple1.draw(self.display)
+
+            self.window.blit(self.display, (0, 0))
+            pygame.display.update()
+            self.reset_keys()
+
+    def game_loop2(self):
+
+        clock = pygame.time.Clock()
+
+        while self.playing:
+
+            self.check_events()
+
+            #Trigger InGame Menu
+            if self.BACK_KEY:
+                #Pause and InGame Menu
+                self.curr_menu = InGameMenu(self)
+                self.curr_menu.display_menu()
+                self.reset_keys()
+
+            pygame.time.delay(50)
+            clock.tick(10)
+            self.snake1.move_1P()
+            self.snake2.move_2P()
+
+            headPos = self.snake1.head.pos
+            appPos = self.apple1.get_position()
+
+            #뱀이 맵 밖으로 나갔을 때 처리
+            if headPos[0] >= self.ROW or headPos[0] < 0 or headPos[1] >= self.COLUMN or headPos[1] < 0:
+                self.curr_menu = MainMenu(self)
+                self.playing = False
+                # self.name = self.curr_menu.input_name()
+                # self.store_score(len(self.snake1.bodys) - 1)
+                # self.curr_menu.display_score(len(self.snake1.bodys) - 1)
+
+            #뱀이 사과를 먹었을 때 처리
+            if headPos[0] == appPos[0] and headPos[1] == appPos[1]:
+                self.snake1.grow()
+                self.apple1.move()
+
+
+            #뱀이 자기 몸과 닿았을 때 처리
+            for x in range(1, len(self.snake1.bodys)):
+                if headPos[0] == self.snake1.bodys[x].pos[0] and headPos[1] == self.snake1.bodys[x].pos[1]:
+                    self.curr_menu = MainMenu(self)
+                    self.playing = False
+                    # self.name = self.curr_menu.input_name()
+                    # self.store_score(len(self.snake1.bodys) - 1)
+                    # self.curr_menu.display_score(len(self.snake1.bodys) - 1)
+                    break
+
+
+            headPos2 = self.snake2.head.pos
+            appPos2 = self.apple2.get_position()
+
+            # 뱀이 맵 밖으로 나갔을 때 처리
+            if headPos2[0] >= self.ROW or headPos2[0] < 0 or headPos2[1] >= self.COLUMN or headPos2[1] < 0:
+                self.curr_menu = MainMenu(self)
+                self.playing = False
+                # self.name = self.curr_menu.input_name()
+                # self.store_score(len(self.snake2.bodys) - 1)
+                # self.curr_menu.display_score(len(self.snake2.bodys) - 1)
+
+            # 뱀이 사과를 먹었을 때 처리
+            if headPos2[0] == appPos2[0] and headPos2[1] == appPos2[1]:
+                self.snake2.grow()
+                self.apple2.move()
+
+            # 뱀이 자기 몸과 닿았을 때 처리
+            for x in range(1, len(self.snake2.bodys)):
+                if headPos2[0] == self.snake2.bodys[x].pos[0] and headPos2[1] == self.snake2.bodys[x].pos[1]:
+                    self.curr_menu = MainMenu(self)
+                    self.playing = False
+                    # self.name = self.curr_menu.input_name()
+                    # self.store_score(len(self.snake2.bodys) - 1)
+                    # self.curr_menu.display_score(len(self.snake2.bodys) - 1)
+                    break
+
+            #뱀1이 뱀2에 닿았을 때
+            for x in range(len(self.snake2.bodys)):
+                if headPos[0] == self.snake2.bodys[x].pos[0] and headPos[1] == self.snake2.bodys[x].pos[1]:
+                    self.curr_menu = MainMenu(self)
+                    self.playing = False
+                    # self.name = self.curr_menu.input_name()
+                    # self.store_score(len(self.snake2.bodys) - 1)
+                    # self.curr_menu.display_score(len(self.snake2.bodys) - 1)
+                    break
+            # 뱀2이 뱀1에 닿았을 때
+            for x in range(len(self.snake1.bodys)):
+                if headPos2[0] == self.snake1.bodys[x].pos[0] and headPos2[1] == self.snake1.bodys[x].pos[1]:
+                    self.curr_menu = MainMenu(self)
+                    self.playing = False
+                    # self.name = self.curr_menu.input_name()
+                    # self.store_score(len(self.snake2.bodys) - 1)
+                    # self.curr_menu.display_score(len(self.snake2.bodys) - 1)
                     break
 
             self.display.fill((255, 255, 255))
             self.drawGrid()
-            self.snake.draw(self.display)
-            self.apple.draw(self.display)
+            self.snake1.draw(self.display)
+            self.apple1.draw(self.display)
+            self.snake2.draw(self.display)
+            self.apple2.draw(self.display)
             self.window.blit(self.display, (0, 0))
             pygame.display.update()
             self.reset_keys()
@@ -169,10 +280,10 @@ class Game():
         name_file.close()
 
     def get_bodys(self):
-        return self.snake.bodys
+        return self.snake1.bodys
 
     def get_turns(self):
-        return self.snake.get_turns()
+        return self.snake1.get_turns()
 
     def get_apple(self):
-        return self.apple.get_position()
+        return self.apple1.get_position()

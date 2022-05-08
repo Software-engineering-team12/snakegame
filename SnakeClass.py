@@ -14,8 +14,7 @@ DIRECTION = {
 
 
 class Snake:
-    bodys = []
-    turns = {}
+
 
     # Body클래스는 뱀의 몸통 한칸을 뜻하며 위치와 방향을 가지고 있다.
     class Body:
@@ -25,6 +24,8 @@ class Snake:
 
     # 생성자 : 뱀의 머리와 꼬리를 생성한다. 초기상태에서 뱀의 머리와 꼬리는 일치한다.
     def __init__(self, game, position=np.array([20, 20])):
+        self.bodys = []
+        self.turns = {}
         self.key = DIRECTION['u']
         self.game = game
         self.head = Snake.Body(position)
@@ -65,7 +66,7 @@ class Snake:
         self.tail = self.bodys[-1]
 
     # move 메소드에서는 키보드 입력을 받아 뱀을 움직인다.
-    def move(self):
+    def move_1P(self):
         if self.game.UP_KEY:
             self.turns[tuple(self.head.pos[:])] = DIRECTION['u']
             self.key = DIRECTION['u']
@@ -90,6 +91,31 @@ class Snake:
             else:
                 bloc.pos = p + d
 
+    def move_2P(self):
+        if self.game.W_KEY:
+            self.turns[tuple(self.head.pos[:])] = DIRECTION['u']
+            self.key = DIRECTION['u']
+        elif self.game.S_KEY:
+            self.turns[tuple(self.head.pos[:])] = DIRECTION['d']
+            self.key = DIRECTION['d']
+        elif self.game.A_KEY:
+            self.turns[tuple(self.head.pos[:])] = DIRECTION['l']
+            self.key = DIRECTION['l']
+        elif self.game.D_KEY:
+            self.turns[tuple(self.head.pos[:])] = DIRECTION['r']
+            self.key = DIRECTION['r']
+
+        for i, bloc in enumerate(self.bodys):
+            p = bloc.pos[:]
+            d = bloc.direction
+            if tuple(p) in self.turns:
+                bloc.pos = p + self.turns[tuple(p)]
+                bloc.direction = self.turns[tuple(p)]
+                if i == len(self.bodys) - 1:
+                    self.turns.pop(tuple(p))
+            else:
+                bloc.pos = p + d
+
     # grow 메소드에서는 뱀이 사과를 먹으면 길이가 늘어나는 행동을 취한다.
     def grow(self):
         self.bodys.append(Snake.Body(self.tail.pos - self.tail.direction, self.tail.direction))
@@ -98,7 +124,7 @@ class Snake:
     # draw 메소드에서는 bodys의 각각의 요소들의 위치를 참고하여 창에 뱀을 그린다.
     def draw(self, screen):
         for i, bloc in enumerate(self.bodys):
-            self.rect_snake.x = B_size * bloc.pos[0]                                                        # 그려야하는 좌표의 위치에 snake 이미지 사이즈만큼의 사각형 객체 생성
+            self.rect_snake.x = B_size * bloc.pos[0]                                                        # 그려야하는 좌표의 위치에 snake1 이미지 사이즈만큼의 사각형 객체 생성
             self.rect_snake.y = B_size * bloc.pos[1]
             if i == 0:                                                                                      # 머리 부분 일 떄
                 if np.array_equiv(bloc.direction, DIRECTION['u']):
