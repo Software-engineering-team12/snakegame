@@ -23,12 +23,12 @@ class Snake:
             self.direction = direction
 
     # 생성자 : 뱀의 머리와 꼬리를 생성한다. 초기상태에서 뱀의 머리와 꼬리는 일치한다.
-    def __init__(self, game, position=np.array([20, 20])):
+    def __init__(self, game, position=np.array([20, 20]), dir = DIRECTION['u']):
         self.bodys = []
         self.turns = {}
-        self.key = DIRECTION['u']
+        self.key = dir
         self.game = game
-        self.head = Snake.Body(position)
+        self.head = Snake.Body(position, dir)
         self.bodys.append(self.head)
         self.tail = self.bodys[-1]
         self.load_img()
@@ -58,10 +58,10 @@ class Snake:
         self.rect_snake = self.body_image.get_rect()
 
     # reset 메소드에서는 게임을 다시 시작할 때 뱀을 초기상태로 되돌린다.
-    def reset(self, position):
+    def reset(self, position, dir = DIRECTION['u']):
         self.bodys = []
         self.turns = {}
-        self.head = Snake.Body(position)
+        self.head = Snake.Body(position, dir)
         self.bodys.append(self.head)
         self.tail = self.bodys[-1]
 
