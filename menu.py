@@ -8,7 +8,7 @@ class Menu():
         self.mid_w, self.mid_h = self.game.WIDTH / 2, self.game.HEIGHT / 2
         self.run_display = True
         self.cursor_rect = pygame.Rect(0, 0, 23, 23)
-        self.offset = - 100
+        self.offset = - 110
 
     def draw_cursor(self, color=(255, 255, 255)):
         self.game.draw_text('*', 15, self.cursor_rect.x, self.cursor_rect.y, color)
@@ -22,12 +22,14 @@ class Menu():
 class MainMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
-        self.state = "Start"
-        self.startx, self.starty = self.mid_w, self.mid_h + 30
-        self.loadx, self.loady = self.mid_w, self.mid_h + 50
-        self.rankingx, self.rankingy = self.mid_w, self.mid_h + 70
-        self.exitx, self.exity = self.mid_w, self.mid_h + 90
-        self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
+        self.state = "Single Play"
+        self.singlex, self.singley = self.mid_w, self.mid_h -10
+        self.dualx, self.dualy = self.mid_w, self.mid_h + 20
+        self.autox, self.autoy = self.mid_w, self.mid_h + 50
+        self.loadx, self.loady = self.mid_w, self.mid_h + 80
+        self.rankingx, self.rankingy = self.mid_w, self.mid_h + 110
+        self.exitx, self.exity = self.mid_w, self.mid_h + 140
+        self.cursor_rect.midtop = (self.singlex + self.offset, self.singley)
 
     def display_menu(self):
         self.run_display = True
@@ -35,8 +37,10 @@ class MainMenu(Menu):
             self.game.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
-            self.game.draw_text("Main Menu", 30, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20)
-            self.game.draw_text("Start Game", 20, self.startx, self.starty)
+            self.game.draw_text("Main Menu", 35, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 100)
+            self.game.draw_text("Single Play", 20, self.singlex, self.singley)
+            self.game.draw_text("Dual Play", 20, self.dualx, self.dualy)
+            self.game.draw_text("Auto Play", 20, self.autox, self.autoy)
             self.game.draw_text("Load", 20, self.loadx, self.loady)
             self.game.draw_text("Ranking", 20, self.rankingx, self.rankingy)
             self.game.draw_text("Exit", 20, self.exitx, self.exity)
@@ -46,7 +50,13 @@ class MainMenu(Menu):
     def move_cursor(self):
 
         if self.game.DOWN_KEY:
-            if self.state == "Start":
+            if self.state == "Single Play":
+                self.cursor_rect.midtop = (self.dualx + self.offset, self.dualy)
+                self.state = "Dual Play"
+            elif self.state == "Dual Play":
+                self.cursor_rect.midtop = (self.autox + self.offset, self.autoy)
+                self.state = "Auto Play"
+            elif self.state == "Auto Play":
                 self.cursor_rect.midtop = (self.loadx + self.offset, self.loady)
                 self.state = "Load"
             elif self.state == "Load":
@@ -56,15 +66,21 @@ class MainMenu(Menu):
                 self.cursor_rect.midtop = (self.exitx + self.offset, self.exity)
                 self.state = "Exit"
             elif self.state == "Exit":
-                self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
-                self.state = "Start"
+                self.cursor_rect.midtop = (self.singlex + self.offset, self.singley)
+                self.state = "Single Play"
         elif self.game.UP_KEY:
-            if self.state == "Start":
+            if self.state == "Single Play":
                 self.cursor_rect.midtop = (self.exitx + self.offset, self.exity)
                 self.state = "Exit"
+            elif self.state == "Dual Play":
+                self.cursor_rect.midtop = (self.singlex + self.offset, self.singley)
+                self.state = "Single Play"
+            elif self.state == "Auto Play":
+                self.cursor_rect.midtop = (self.dualx + self.offset, self.dualy)
+                self.state = "Dual Play"
             elif self.state == "Load":
-                self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
-                self.state = "Start"
+                self.cursor_rect.midtop = (self.autox + self.offset, self.autoy)
+                self.state = "Auto Play"
             elif self.state == "Ranking":
                 self.cursor_rect.midtop = (self.loadx + self.offset, self.loady)
                 self.state = "Load"
@@ -75,12 +91,16 @@ class MainMenu(Menu):
     def check_input(self):
         self.move_cursor()
         if self.game.ENTER_KEY:
-            if self.state == "Start":
+            if self.state == "Single Play":
                 self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
                 self.game.apple.set_position(position=(30,30))
                 self.game.playing = True
                 self.run_display = False
 
+            elif self.state == "Dual Play":
+                pass                            # 추가 필요
+            elif self.state == "Auto Play":
+                pass                            # 추가 필요
             elif self.state == "Load":
                 save_bodys = []
                 load_file = open('game_file.txt', 'r')
