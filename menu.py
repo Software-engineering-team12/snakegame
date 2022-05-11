@@ -8,7 +8,7 @@ class Menu():
         self.mid_w, self.mid_h = self.game.WIDTH / 2, self.game.HEIGHT / 2
         self.run_display = True
         self.cursor_rect = pygame.Rect(0, 0, 23, 23)
-        self.offset = - 110
+        self.offset = - 110                             # offset 수정했음
 
     def draw_cursor(self, color=(255, 255, 255)):
         self.game.draw_text('*', 15, self.cursor_rect.x, self.cursor_rect.y, color)
@@ -20,7 +20,7 @@ class Menu():
 
 
 class MainMenu(Menu):
-    def __init__(self, game):
+    def __init__(self, game):                 # 전반적으로 위치 조정 줄 간격 및 글자 크기 조절
         Menu.__init__(self, game)
         self.state = "Single Play"
         self.singlex, self.singley = self.mid_w, self.mid_h - 10
@@ -131,7 +131,7 @@ class MainMenu(Menu):
                 sys.exit()
 
 
-class SingleInGameMenu(Menu):
+class SingleInGameMenu(Menu):                              # singleplay 일 떄 ingamemenu -> 과제1의 ingamemenu와 동일
     def __init__(self, game):
         Menu.__init__(self, game)
         self.state = "Resume"
@@ -211,7 +211,7 @@ class SingleInGameMenu(Menu):
                 self.game.playing = False
 
 
-class DualAutoInGameMenu(Menu):
+class DualAutoInGameMenu(Menu):                                    # dual과 auto의 ingamemenue 기능 동일
     def __init__(self, game):
         Menu.__init__(self, game)
         self.state = "Resume"
@@ -270,8 +270,8 @@ class DualAutoInGameMenu(Menu):
                 self.game.playing = False
 
 
-class ScoreMenu(Menu):
-    def __init__(self, game):
+class ScoreMenu(Menu):                               # single과 dual 게임 종로 시 나타나는 메뉴로 single시 display_score 호출
+    def __init__(self, game):                        # dual 시 승리한 사람 매개변수 받아서 display_winner 메소드 호출
         Menu.__init__(self, game)
         self.state = "Restart"
         self.restartx, self.restarty = self.mid_w, self.mid_h + 30
