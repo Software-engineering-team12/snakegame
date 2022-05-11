@@ -1,9 +1,9 @@
 from pickle import TRUE
 import pygame
-from menu import MainMenu,SingleInGameMenu,ScoreMenu
+from menu import MainMenu,SingleInGameMenu,ScoreMenu,DualAutoInGameMenu
 from SnakeClass import Snake
 from apple_class import Apple
-
+import numpy as np
 
 class Game():
     def __init__(self):
@@ -40,14 +40,16 @@ class Game():
 
             self.check_events()
 
-            #Trigger InGame Menu
-            if self.BACK_KEY:
-                #Pause and InGame Menu
-                self.curr_menu = InGameMenu(self)
-                self.curr_menu.display_menu()
-                self.reset_keys()
+
             
             if self.dual_playing == False :
+                # Trigger InGame Menu
+                if self.BACK_KEY:
+                    # Pause and InGame Menu
+                    self.curr_menu = SingleInGameMenu(self)
+                    self.curr_menu.display_menu()
+                    self.reset_keys()
+
                 pygame.time.delay(50)
                 clock.tick(10)
                 self.snake.move_1P()
@@ -62,6 +64,12 @@ class Game():
                 self.apple.draw(self.display)
             
             else :
+                if self.BACK_KEY:
+                    # Pause and InGame Menu
+                    self.curr_menu = DualAutoInGameMenu(self)
+                    self.curr_menu.display_menu()
+                    self.reset_keys()
+
                 pygame.time.delay(50)
                 clock.tick(10)
                 self.snake.move_1P()
@@ -70,8 +78,8 @@ class Game():
                 self.check_wall_hit(self.snake)
                 self.check_wall_hit(self.snake2)
 
-                self.check_eat_apple(self.snake, self.apple, self.apple2)
-                self.check_eat_apple(self.snake2, self.apple, self.apple2)
+                self.check_eat_apple_dual(self.snake, self.apple, self.apple2)
+                self.check_eat_apple_dual(self.snake2, self.apple, self.apple2)
 
                 self.check_body_hit(self.snake)
                 self.check_body_hit(self.snake2)
@@ -92,7 +100,7 @@ class Game():
             self.reset_keys()
 
     def new_snake(self) :
-        self.snake2 = Snake(self, (self.ROW/4, self.COLUMN/4))
+        self.snake2 = Snake(self, (0,0),dir=np.array([0, 1]))
         self.apple2 = Apple((20, 20), self.snake2)
     
     #뱀이 사과를 먹었을 때 처리
@@ -105,7 +113,7 @@ class Game():
             apple.move()
 
     #뱀이 사과를 먹었을 때 처리(듀얼플레이)
-    def check_eat_apple(self, snake, apple1, apple2) :
+    def check_eat_apple_dual(self, snake, apple1, apple2) :
         headPos = snake.head.pos
         appPos1 = apple1.get_position()
         appPos2 = apple2.get_position()
@@ -362,10 +370,10 @@ class Game():
         name_file.close()
 
     def get_bodys(self):
-        return self.snake1.bodys
+        return self.snake.bodys
 
     def get_turns(self):
-        return self.snake1.get_turns()
+        return self.snake.get_turns()
 
     def get_apple(self):
-        return self.apple1.get_position()
+        return self.apple.get_position()

@@ -1,6 +1,6 @@
 import sys
 import pygame
-
+import numpy as np
 
 class Menu():
     def __init__(self, game):
@@ -100,7 +100,12 @@ class MainMenu(Menu):
                 self.run_display = False
 
             elif self.state == "Dual Play":
-                pass                            # 추가 필요
+                self.game.snake.reset((self.game.ROW-1,self.game.COLUMN-1))
+                self.game.apple.set_position(position=(30, 30))
+                self.game.dual_playing = True
+                self.game.playing = True
+                self.run_display = False
+
             elif self.state == "Auto Play":
                 pass                            # 추가 필요
             elif self.state == "Load":
@@ -243,10 +248,10 @@ class DualAutoInGameMenu(Menu):                                    # dual과 aut
                 self.cursor_rect.midtop = (self.restartx + self.offset, self.restarty)
                 self.state = "Restart"
             elif self.state == "Restart":
-                self.cursor_rect.midtop = (self.exitx + self.offset, self.exity)
+                self.cursor_rect.midtop = (self.exitx + self.offset * 2, self.exity)
                 self.state = "Exit"
             elif self.state == "Exit":
-                self.cursor_rect.midtop = (self.resumex + self.offset, self.resumey)
+                self.cursor_rect.midtop = (self.resumex + self.offset , self.resumey)
                 self.state = "Resume"
         elif self.game.UP_KEY:
             if self.state == "Resume":
@@ -265,7 +270,8 @@ class DualAutoInGameMenu(Menu):                                    # dual과 aut
             if self.state == "Resume":
                 self.run_display = False
             elif self.state == "Restart":
-                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                self.game.snake.reset((self.game.ROW-1, self.game.COLUMN-1), dir=np.array([0, -1]))
+                self.game.snake2.reset((0,0),dir=np.array([0, 1]))
                 self.run_display = False
             elif self.state == "Exit":
                 self.game.curr_menu = MainMenu(self.game)
