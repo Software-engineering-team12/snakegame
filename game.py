@@ -1,6 +1,6 @@
 from pickle import TRUE
 import pygame
-from menu import MainMenu,InGameMenu,ScoreMenu
+from menu import MainMenu,SingleInGameMenu,ScoreMenu
 from SnakeClass import Snake
 from apple_class import Apple
 
@@ -177,7 +177,7 @@ class Game():
             #Trigger InGame Menu
             if self.BACK_KEY:
                 #Pause and InGame Menu
-                self.curr_menu = InGameMenu(self)
+                self.curr_menu = SingleInGameMenu(self)
                 self.curr_menu.display_menu()
                 self.reset_keys()
 
