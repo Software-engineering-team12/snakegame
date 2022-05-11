@@ -287,6 +287,8 @@ class ScoreMenu(Menu):                               # single과 dual 게임 종
         self.exitx, self.exity = self.mid_w, self.mid_h + 50
         self.cursor_rect.midtop = (self.restartx + self.offset, self.restarty)
 
+
+
     def display_score(self, score):
         self.run_display = True
         while self.run_display:
@@ -356,8 +358,12 @@ class ScoreMenu(Menu):                               # single과 dual 게임 종
         self.move_cursor()
         if self.game.ENTER_KEY:
             if self.state == "Restart":
-                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
-                #self.game.snake2.reset((self.game.ROW / 4, self.game.COLUMN / 4))
+                if self.game.dual_playing == False:
+                    self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                else:
+                    self.game.snake.reset((self.game.ROW - 1, self.game.COLUMN - 1), dir=np.array([0, -1]))
+                    self.game.snake2.reset((0, 0), dir=np.array([0, 1]))
+
                 self.run_display = False
             elif self.state == "Exit":
                 self.game.curr_menu = MainMenu(self.game)
