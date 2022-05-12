@@ -31,7 +31,10 @@ class Game():
     def game_loop(self):
 
         if self.dual_playing == True :
+            self.snake.load_img(player=1)
             self.new_snake()
+        else:
+            self.snake.load_img(player=0)
 
 
         clock = pygame.time.Clock()
@@ -39,10 +42,9 @@ class Game():
         while self.playing:
 
             self.check_events()
-
-
             
             if self.dual_playing == False :
+
                 # Trigger InGame Menu
                 if self.BACK_KEY:
                     # Pause and InGame Menu
@@ -100,7 +102,7 @@ class Game():
             self.reset_keys()
 
     def new_snake(self) :
-        self.snake2 = Snake(self, (0,0),dir=np.array([0, 1]))
+        self.snake2 = Snake(self, (0,0),dir=np.array([0, 1]), player=2)
         self.apple2 = Apple((20, 20), self.snake2)
     
     #뱀이 사과를 먹었을 때 처리

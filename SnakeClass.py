@@ -23,39 +23,85 @@ class Snake:
             self.direction = direction
 
     # 생성자 : 뱀의 머리와 꼬리를 생성한다. 초기상태에서 뱀의 머리와 꼬리는 일치한다.
-    def __init__(self, game, position=np.array([20, 20]), dir = DIRECTION['u']):
+    def __init__(self, game, position=np.array([20, 20]), dir = DIRECTION['u'], player=0):
         self.bodys = []
         self.turns = {}
         self.key = dir
         self.game = game
+        self.player = player
         self.head = Snake.Body(position, dir)
         self.bodys.append(self.head)
         self.tail = self.bodys[-1]
-        self.load_img()
+        self.load_img(self.player)
 
     # load_img메소드는 snake의 머리, 몸통, 꼬리에 해당하는 이미지파일을 불러온다
-    def load_img(self) :
-        self.head_up = pygame.image.load("img/head_up.png").convert_alpha()
-        self.head_up = pygame.transform.scale(self.head_up, (23, 23))
-        self.head_down = pygame.image.load("img/head_down.png").convert_alpha()
-        self.head_down = pygame.transform.scale(self.head_down, (23, 23))
-        self.head_left = pygame.image.load("img/head_left.png").convert_alpha()
-        self.head_left = pygame.transform.scale(self.head_left, (23, 23))
-        self.head_right = pygame.image.load("img/head_right.png").convert_alpha()
-        self.head_right = pygame.transform.scale(self.head_right, (23, 23))
+    def load_img(self, player):
+        if player == 0:
+            self.head_up = pygame.image.load("img/head_up.png").convert_alpha()
+            self.head_up = pygame.transform.scale(self.head_up, (23, 23))
+            self.head_down = pygame.image.load("img/head_down.png").convert_alpha()
+            self.head_down = pygame.transform.scale(self.head_down, (23, 23))
+            self.head_left = pygame.image.load("img/head_left.png").convert_alpha()
+            self.head_left = pygame.transform.scale(self.head_left, (23, 23))
+            self.head_right = pygame.image.load("img/head_right.png").convert_alpha()
+            self.head_right = pygame.transform.scale(self.head_right, (23, 23))
 
-        self.tail_up = pygame.image.load("img/tail_up.png").convert_alpha()
-        self.tail_up = pygame.transform.scale(self.tail_up, (23, 23))
-        self.tail_down = pygame.image.load("img/tail_down.png").convert_alpha()
-        self.tail_down = pygame.transform.scale(self.tail_down, (23, 23))
-        self.tail_left = pygame.image.load("img/tail_left.png").convert_alpha()
-        self.tail_left = pygame.transform.scale(self.tail_left, (23, 23))
-        self.tail_right = pygame.image.load("img/tail_right.png").convert_alpha()
-        self.tail_right = pygame.transform.scale(self.tail_right, (23, 23))
+            self.tail_up = pygame.image.load("img/tail_up.png").convert_alpha()
+            self.tail_up = pygame.transform.scale(self.tail_up, (23, 23))
+            self.tail_down = pygame.image.load("img/tail_down.png").convert_alpha()
+            self.tail_down = pygame.transform.scale(self.tail_down, (23, 23))
+            self.tail_left = pygame.image.load("img/tail_left.png").convert_alpha()
+            self.tail_left = pygame.transform.scale(self.tail_left, (23, 23))
+            self.tail_right = pygame.image.load("img/tail_right.png").convert_alpha()
+            self.tail_right = pygame.transform.scale(self.tail_right, (23, 23))
 
-        self.body_image = pygame.image.load("img/body.png").convert_alpha()
-        self.body_image = pygame.transform.scale(self.body_image, (23, 23))
-        self.rect_snake = self.body_image.get_rect()
+            self.body_image = pygame.image.load("img/body.png").convert_alpha()
+            self.body_image = pygame.transform.scale(self.body_image, (23, 23))
+            self.rect_snake = self.body_image.get_rect()
+
+        if player == 1:
+            self.head_up = pygame.image.load("img/head_up1.png").convert_alpha()
+            self.head_up = pygame.transform.scale(self.head_up, (23, 23))
+            self.head_down = pygame.image.load("img/head_down1.png").convert_alpha()
+            self.head_down = pygame.transform.scale(self.head_down, (23, 23))
+            self.head_left = pygame.image.load("img/head_left1.png").convert_alpha()
+            self.head_left = pygame.transform.scale(self.head_left, (23, 23))
+            self.head_right = pygame.image.load("img/head_right1.png").convert_alpha()
+            self.head_right = pygame.transform.scale(self.head_right, (23, 23))
+            self.tail_up = pygame.image.load("img/grade.png").convert_alpha()
+            self.tail_up = pygame.transform.scale(self.tail_up, (23, 23))
+            self.tail_down = pygame.image.load("img/grade.png").convert_alpha()
+            self.tail_down = pygame.transform.scale(self.tail_down, (23, 23))
+            self.tail_left = pygame.image.load("img/grade.png").convert_alpha()
+            self.tail_left = pygame.transform.scale(self.tail_left, (23, 23))
+            self.tail_right = pygame.image.load("img/grade.png").convert_alpha()
+            self.tail_right = pygame.transform.scale(self.tail_right, (23, 23))
+
+            self.body_image = pygame.image.load("img/grade.png").convert_alpha()
+            self.body_image = pygame.transform.scale(self.body_image, (23, 23))
+            self.rect_snake = self.body_image.get_rect()
+
+        if player == 2:
+            self.head_up = pygame.image.load("img/head_up2.png").convert_alpha()
+            self.head_up = pygame.transform.scale(self.head_up, (23, 23))
+            self.head_down = pygame.image.load("img/head_down2.png").convert_alpha()
+            self.head_down = pygame.transform.scale(self.head_down, (23, 23))
+            self.head_left = pygame.image.load("img/head_left2.png").convert_alpha()
+            self.head_left = pygame.transform.scale(self.head_left, (23, 23))
+            self.head_right = pygame.image.load("img/head_right2.png").convert_alpha()
+            self.head_right = pygame.transform.scale(self.head_right, (23, 23))
+            self.tail_up = pygame.image.load("img/grade.png").convert_alpha()
+            self.tail_up = pygame.transform.scale(self.tail_up, (23, 23))
+            self.tail_down = pygame.image.load("img/grade.png").convert_alpha()
+            self.tail_down = pygame.transform.scale(self.tail_down, (23, 23))
+            self.tail_left = pygame.image.load("img/grade.png").convert_alpha()
+            self.tail_left = pygame.transform.scale(self.tail_left, (23, 23))
+            self.tail_right = pygame.image.load("img/grade.png").convert_alpha()
+            self.tail_right = pygame.transform.scale(self.tail_right, (23, 23))
+
+            self.body_image = pygame.image.load("img/grade.png").convert_alpha()
+            self.body_image = pygame.transform.scale(self.body_image, (23, 23))
+            self.rect_snake = self.body_image.get_rect()
 
     # reset 메소드에서는 게임을 다시 시작할 때 뱀을 초기상태로 되돌린다.
     def reset(self, position, dir = DIRECTION['u']):
