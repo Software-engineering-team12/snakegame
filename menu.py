@@ -96,6 +96,7 @@ class MainMenu(Menu):
                 self.game.apple.set_position(position=(30, 30))
                 #self.game.snake2.reset((self.game.ROW / 4, self.game.COLUMN / 4))
                 #self.game.apple2.set_position(position=(20, 20))
+                self.game.dual_playing = False
                 self.game.playing = True
                 self.run_display = False
 
