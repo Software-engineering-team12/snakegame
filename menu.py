@@ -97,19 +97,26 @@ class MainMenu(Menu):
                 #self.game.snake2.reset((self.game.ROW / 4, self.game.COLUMN / 4))
                 #self.game.apple2.set_position(position=(20, 20))
                 self.game.dual_playing = False
+                self.game.auto_playing = False
                 self.game.playing = True
-                self.game.dual_playing = False
                 self.run_display = False
 
             elif self.state == "Dual Play":
                 self.game.snake.reset((self.game.ROW-1,self.game.COLUMN-1))
                 self.game.apple.set_position(position=(30, 30))
                 self.game.dual_playing = True
+                self.game.auto_playing = False
                 self.game.playing = True
                 self.run_display = False
 
             elif self.state == "Auto Play":
-                pass                            # 추가 필요
+                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                self.game.apple.set_position(position=(30, 30))
+                self.game.dual_playing = False
+                self.game.auto_playing = True
+                self.game.playing = True
+                self.run_display = False
+
             elif self.state == "Load":
                 save_bodys = []
                 load_file = open('game_file.txt', 'r')

@@ -9,7 +9,7 @@ class Game():
     def __init__(self):
         pygame.init()
 
-        self.playing, self.dual_playing ,self.running = False,False, True
+        self.playing, self.dual_playing , self.auto_playing, self.running = False, False, False, True
         self.UP_KEY, self.DOWN_KEY, self.LEFT_KEY, self.RIGHT_KEY, self.BACK_KEY = False, False, False, False, False
         self.W_KEY,self.A_KEY,self.S_KEY,self.D_KEY, self.ENTER_KEY = False, False, False, False, False
         self.WIDTH, self.HEIGHT = 920, 920
@@ -43,15 +43,14 @@ class Game():
 
             self.check_events()
             
+            # Trigger InGame Menu
+            if self.BACK_KEY:
+                # Pause and InGame Menu
+                self.curr_menu = SingleInGameMenu(self)
+                self.curr_menu.display_menu()
+                self.reset_keys()
+
             if self.dual_playing == False :
-
-                # Trigger InGame Menu
-                if self.BACK_KEY:
-                    # Pause and InGame Menu
-                    self.curr_menu = SingleInGameMenu(self)
-                    self.curr_menu.display_menu()
-                    self.reset_keys()
-
                 pygame.time.delay(50)
                 clock.tick(10)
                 self.snake.move_1P()
@@ -65,13 +64,21 @@ class Game():
                 self.snake.draw(self.display)
                 self.apple.draw(self.display)
             
-            else :
-                if self.BACK_KEY:
-                    # Pause and InGame Menu
-                    self.curr_menu = DualAutoInGameMenu(self)
-                    self.curr_menu.display_menu()
-                    self.reset_keys()
+            elif self.auto_playing == True :
+                pygame.time.delay(50)
+                clock.tick(10)
+                self.snake.move_auto()
 
+                self.check_wall_hit(self.snake)
+                self.check_eat_apple(self.snake, self.apple)
+                self.check_body_hit(self.snake)
+                
+                self.display.fill((255, 255, 255))
+                self.drawGrid()
+                self.snake.draw(self.display)
+                self.apple.draw(self.display)
+            
+            else :
                 pygame.time.delay(50)
                 clock.tick(10)
                 self.snake.move_1P()
@@ -94,8 +101,6 @@ class Game():
                 self.apple.draw(self.display)
                 self.snake2.draw(self.display)
                 self.apple2.draw(self.display)
-
-
 
             self.window.blit(self.display, (0, 0))
             pygame.display.update()
