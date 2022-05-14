@@ -1,4 +1,5 @@
 # Snake Class
+from asyncio.windows_events import INFINITE
 import pygame
 import numpy as np
 
@@ -14,7 +15,6 @@ DIRECTION = {
 
 
 class Snake:
-
 
     # Body클래스는 뱀의 몸통 한칸을 뜻하며 위치와 방향을 가지고 있다.
     class Body:
@@ -162,6 +162,41 @@ class Snake:
             else:
                 bloc.pos = p + d
 
+    def move_auto(self, apple_pos, row, col):
+        INF = 9999
+        node = {tuple(self.head.pos + DIRECTION['u']) : INF, 
+                tuple(self.head.pos + DIRECTION['d']) : INF, 
+                tuple(self.head.pos + DIRECTION['l']) : INF, 
+                tuple(self.head.pos + DIRECTION['r']) : INF}
+        
+        for v in node:
+            if v[0] >= row or v[0] < 0 or v[1] >= col or v[1] < 0:
+                continue
+            else :
+                node[v] = (apple_pos[0] - v[0])**2 + (apple_pos[1] - v[1])**2
+
+            for bloc in self.bodys :
+                if v == tuple(bloc.pos) :
+                    node[v] = INF
+        
+        next_pos = np.array(min(node, key=node.get))
+        next_dir = next_pos - self.head.pos
+        self.turns[tuple(self.head.pos[:])] = next_dir
+        self.key = next_dir
+
+        for i, bloc in enumerate(self.bodys):
+            p = bloc.pos[:]
+            d = bloc.direction
+            if tuple(p) in self.turns:
+                bloc.pos = p + self.turns[tuple(p)]
+                bloc.direction = self.turns[tuple(p)]
+                if i == len(self.bodys) - 1:
+                    self.turns.pop(tuple(p))
+            else:
+                bloc.pos = p + d
+
+        
+    
     # grow 메소드에서는 뱀이 사과를 먹으면 길이가 늘어나는 행동을 취한다.
     def grow(self):
         self.bodys.append(Snake.Body(self.tail.pos - self.tail.direction, self.tail.direction))

@@ -50,10 +50,11 @@ class Game():
                 self.curr_menu.display_menu()
                 self.reset_keys()
 
-            if self.dual_playing == False :
+            if self.auto_playing == True :
                 pygame.time.delay(50)
                 clock.tick(10)
-                self.snake.move_1P()
+                app = self.apple.get_position()
+                self.snake.move_auto(app, self.ROW, self.COLUMN)
 
                 self.check_wall_hit(self.snake)
                 self.check_eat_apple(self.snake, self.apple)
@@ -63,11 +64,11 @@ class Game():
                 self.drawGrid()
                 self.snake.draw(self.display)
                 self.apple.draw(self.display)
-            
-            elif self.auto_playing == True :
+
+            elif self.dual_playing == False :
                 pygame.time.delay(50)
                 clock.tick(10)
-                self.snake.move_auto()
+                self.snake.move_1P()
 
                 self.check_wall_hit(self.snake)
                 self.check_eat_apple(self.snake, self.apple)
@@ -161,7 +162,6 @@ class Game():
                 else :
                     self.curr_menu = ScoreMenu(self)
                     self.curr_menu.display_winner(2 if player == 1 else 1)
-
                     break
 
     def check_snake_hit(self, snake1, snake2) :
