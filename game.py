@@ -4,6 +4,7 @@ from menu import MainMenu,SingleInGameMenu,ScoreMenu,DualAutoInGameMenu
 from SnakeClass import Snake
 from apple_class import Apple
 import numpy as np
+import heapq
 
 class Game():
     def __init__(self):
@@ -40,7 +41,7 @@ class Game():
         clock = pygame.time.Clock()
 
         while self.playing:
-
+            # print(self.snake.head.pos[0],self.snake.head.pos[1])
             self.check_events()
             
             if self.dual_playing == False :
@@ -100,6 +101,116 @@ class Game():
             self.window.blit(self.display, (0, 0))
             pygame.display.update()
             self.reset_keys()
+
+
+    def a_star(self):
+        board = [[1 for _ in range(self.COLUMN)] for _ in range(self.ROW)]
+        dx = [1,-1,0,0]
+        dy = [0,0,-1,1]
+        for body in (self.snake.bodys):
+            board[int(body.pos[0])][int(body.pos[1])] = 0
+
+        target = self.apple.get_position()
+        start = (int(self.snake.head.pos[0]),int(self.snake.head.pos[1]))
+
+        h = abs(start[0]-target[0]) + abs(start[1]-target[1])
+        openlist = []
+        closelist = []
+        heapq.heappush(openlist,(h,0,start[0],start[1])) # f,g,x,y,px,py
+
+        while openlist:
+            curnode = heapq.heappop(openlist)
+            closelist.append(curnode)
+
+            if curnode[2] == target[0] and curnode[3] == target[1]:
+                final_list = []
+                targetcurnode = target
+                while targetcurnode != start:
+                    final_list.append(targetcurnode)
+                    targetcurnode = board[targetcurnode[0]][targetcurnode[1]]
+
+                return final_list
+
+            for i in range(4):
+                next_x = curnode[2] + dx[i]
+                next_y = curnode[3] + dy[i]
+                if 0 <= next_x < self.ROW and 0 <= next_y < self.COLUMN and board[next_x][next_y] != 0:
+                    flag = True
+                    for close in closelist:
+                        if close[2] == next_x and close[3] == next_y:
+                            flag = False
+                            break
+                    if flag:
+                        movecost = curnode[1] + 1
+                        flag2 = True
+                        for open in openlist:
+                            if open[2] == next_x and open[3] == next_y:
+                                flag2 = False
+                                break
+                        if flag2:
+                            board[next_x][next_y] = (curnode[2],curnode[3])
+                            heapq.heappush(openlist,(movecost+abs(next_x-target[0])+abs(next_y-target[1]),movecost,next_x,next_y))
+
+
+
+
+
+
+
+
+
+    def auto_play(self):
+
+        self.snake.load_img(player=0)
+
+        clock = pygame.time.Clock()
+
+        while self.playing:
+
+            self.check_events()
+
+            # Trigger InGame Menu
+            if self.BACK_KEY:
+                # Pause and InGame Menu
+                self.curr_menu = SingleInGameMenu(self)
+                self.curr_menu.display_menu()
+                self.reset_keys()
+
+            pygame.time.delay(10)
+            clock.tick(1000)
+            finallist = self.a_star()
+            if finallist:
+                next = finallist[-1]
+                head = self.snake.head.pos
+            # print(finallist)
+            # print(head)
+
+                if next[0] == head[0] and next[1] == head[1] + 1:# 다음 방향이 오른쪽
+                    self.DOWN_KEY = True
+                elif  next[0] == head[0] and next[1] == head[1] - 1: #다음 방향이 왼쪽
+                    self.UP_KEY = True
+                elif  next[0] == head[0] + 1 and next[1] == head[1]: #다음 방향이 아래쪽
+                    self.RIGHT_KEY = True
+                elif  next[0] == head[0] - 1 and next[1] == head[1]: #다음 방향이 위쪽
+                    self.LEFT_KEY = True
+
+            self.snake.move_1P()
+
+            self.check_wall_hit(self.snake)
+            self.check_eat_apple(self.snake, self.apple)
+            self.check_body_hit(self.snake)
+
+            self.display.fill((255, 255, 255))
+            self.drawGrid()
+            self.snake.draw(self.display)
+            self.apple.draw(self.display)
+
+
+
+            self.window.blit(self.display, (0, 0))
+            pygame.display.update()
+            self.reset_keys()
+
 
     def new_snake(self) :
         self.snake2 = Snake(self, (0,0),dir=np.array([0, 1]), player=2)
