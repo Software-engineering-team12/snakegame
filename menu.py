@@ -92,8 +92,8 @@ class MainMenu(Menu):
         self.move_cursor()
         if self.game.ENTER_KEY:
             if self.state == "Single Play":
-                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
-                # self.game.apple.set_position(position=(30, 30))
+                self.game.snake.reset((self.game.COLUMN / 2, self.game.ROW / 2))
+                self.game.apple.set_position(position=(30, 30))
                 #self.game.snake2.reset((self.game.ROW / 4, self.game.COLUMN / 4))
                 #self.game.apple2.set_position(position=(20, 20))
                 self.game.dual_playing = False
@@ -103,7 +103,7 @@ class MainMenu(Menu):
 
             elif self.state == "Dual Play":
                 self.game.snake.reset((self.game.COLUMN-1, self.game.ROW-1))
-                # self.game.apple.set_position(position=(30, 30))
+                self.game.apple.set_position(position=(30, 30))
                 self.game.dual_playing = True
                 self.game.playing = True
                 self.run_display = False
@@ -121,7 +121,7 @@ class MainMenu(Menu):
 
                 self.game.apple.set_position(load_apple)
 
-                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                self.game.snake.reset((self.game.COLUMN / 2, self.game.ROW / 2))
                 self.game.snake.set_body(save_bodys)
                 self.game.playing = True
 
@@ -199,8 +199,8 @@ class SingleInGameMenu(Menu):                              # singleplay 일 떄 
             if self.state == "Resume":
                 self.run_display = False
             elif self.state == "Restart":
-                self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
-                #self.game.snake2.reset((self.game.ROW / 4, self.game.COLUMN / 4))
+                self.game.snake.reset((self.game.COLUMN / 2, self.game.ROW / 2))
+                self.game.apple.set_position((30, 30))                             # apple 위치 초기화
                 self.run_display = False
             elif self.state == "Save":
                 game_file = open('game_file.txt', 'w')
@@ -272,8 +272,10 @@ class DualAutoInGameMenu(Menu):                                    # dual과 aut
             if self.state == "Resume":
                 self.run_display = False
             elif self.state == "Restart":
-                self.game.snake.reset((self.game.ROW-1, self.game.COLUMN-1), dir=np.array([0, -1]))
+                self.game.snake.reset((self.game.COLUMN-1, self.game.ROW-1), dir=np.array([0, -1]))
                 self.game.snake2.reset((0, 0), dir=np.array([0, 1]))
+                self.game.apple.set_position((30, 30))                               # apple 위치 초기화
+                self.game.apple2.set_position((20, 20))
                 self.run_display = False
             elif self.state == "Exit":
                 self.game.curr_menu = MainMenu(self.game)
@@ -361,10 +363,13 @@ class ScoreMenu(Menu):                               # single과 dual 게임 종
         if self.game.ENTER_KEY:
             if self.state == "Restart":
                 if self.game.dual_playing == False:
-                    self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
+                    self.game.snake.reset((self.game.COLUMN / 2, self.game.ROW / 2))
+                    self.game.apple.set_position((30, 30))
                 else:
-                    self.game.snake.reset((self.game.ROW - 1, self.game.COLUMN - 1), dir=np.array([0, -1]))
+                    self.game.snake.reset((self.game.COLUMN - 1, self.game.ROW - 1), dir=np.array([0, -1]))
                     self.game.snake2.reset((0, 0), dir=np.array([0, 1]))
+                    self.game.apple.set_position((30, 30))
+                    self.game.apple2.set_position((20, 20))
 
                 self.run_display = False
             elif self.state == "Exit":

@@ -12,7 +12,7 @@ class Game():
         self.playing, self.dual_playing, self.running = False, False, True
         self.UP_KEY, self.DOWN_KEY, self.LEFT_KEY, self.RIGHT_KEY, self.BACK_KEY = False, False, False, False, False
         self.W_KEY, self.A_KEY, self.S_KEY, self.D_KEY, self.ENTER_KEY = False, False, False, False, False
-        self.WIDTH, self.HEIGHT = 1600, 800
+        self.WIDTH, self.HEIGHT = 1440, 720
         self.COLUMN, self.ROW = 80, 40
         self.display = pygame.Surface((self.WIDTH, self.HEIGHT))
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
