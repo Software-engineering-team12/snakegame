@@ -12,8 +12,8 @@ class Game():
         self.playing, self.dual_playing, self.running = False, False, True
         self.UP_KEY, self.DOWN_KEY, self.LEFT_KEY, self.RIGHT_KEY, self.BACK_KEY = False, False, False, False, False
         self.W_KEY, self.A_KEY, self.S_KEY, self.D_KEY, self.ENTER_KEY = False, False, False, False, False
-        self.WIDTH, self.HEIGHT = 800, 800
-        self.COLUMN, self.ROW = 40, 40
+        self.WIDTH, self.HEIGHT = 1600, 800
+        self.COLUMN, self.ROW = 80, 40
         self.display = pygame.Surface((self.WIDTH, self.HEIGHT))
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         self.font_name = "font/8-BIT WONDER.TTF"
@@ -103,7 +103,7 @@ class Game():
             pygame.display.update()
             self.reset_keys()
 
-    def new_snake(self) :
+    def new_snake(self):
         self.snake2 = Snake(self, (0, 0), dir=np.array([0, 1]), player=2)
         self.apple2 = Apple((20, 20), self.snake2)
     
@@ -133,7 +133,7 @@ class Game():
     #뱀이 맵 밖으로 나갔을 때 처리
     def check_wall_hit(self, snake, player=1):
         headPos = snake.head.pos
-        if headPos[0] >= self.ROW or headPos[0] < 0 or headPos[1] >= self.COLUMN or headPos[1] < 0:
+        if headPos[0] >= self.COLUMN or headPos[0] < 0 or headPos[1] >= self.ROW or headPos[1] < 0:
             if self.dual_playing == False :
                 self.curr_menu = ScoreMenu(self)
                 self.name = self.curr_menu.input_name()
@@ -141,11 +141,12 @@ class Game():
                 self.curr_menu.display_score(len(snake.bodys) - 1)
             else :
                 self.curr_menu = ScoreMenu(self)
+                print(headPos[0], headPos[1], player)
                 self.curr_menu.display_winner(2 if player == 1 else 1)
 
     
     #뱀이 자기 몸과 닿았을 때 처리
-    def check_body_hit(self, snake,player=1):
+    def check_body_hit(self, snake, player=1):
         headPos = snake.head.pos
         for x in range(1, len(snake.bodys)):
             if headPos[0] == snake.bodys[x].pos[0] and headPos[1] == snake.bodys[x].pos[1]:
@@ -219,16 +220,19 @@ class Game():
         self.display.blit(text_surface, text_rect)
 
     def drawGrid(self):
-        sizeBtwn = self.WIDTH // self.ROW
+        sizeBtwn = self.WIDTH // self.COLUMN
         x = 0
         y = 0
-        for l in range(self.ROW):
-            x = x + sizeBtwn
+        for i in range(self.ROW):                                                              # 그리드 가로 줄 그리기
             y = y + sizeBtwn
-
             # 그리드 그리기
-            pygame.draw.line(self.display, (160, 188, 194), (x, 0), (x, self.WIDTH))                      # 세로 줄
-            pygame.draw.line(self.display, (160, 188, 194), (0, y), (self.HEIGHT, y))                     # 가로 줄
+            pygame.draw.line(self.display, (160, 188, 194), (0, y), (self.WIDTH, y))                     # 가로 줄
+
+        for i in range(self.COLUMN):                                                              # 그리드 세로 줄 그리기
+            x = x + sizeBtwn
+            # 그리드 그리기
+            pygame.draw.line(self.display, (160, 188, 194), (x, 0), (x, self.WIDTH))  # 세로 줄
+
         self.display.blit(self.background, (270, 330))
 
     def store_score(self, score):

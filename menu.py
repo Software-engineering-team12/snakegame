@@ -93,7 +93,7 @@ class MainMenu(Menu):
         if self.game.ENTER_KEY:
             if self.state == "Single Play":
                 self.game.snake.reset((self.game.ROW / 2, self.game.COLUMN / 2))
-                self.game.apple.set_position(position=(30, 30))
+                # self.game.apple.set_position(position=(30, 30))
                 #self.game.snake2.reset((self.game.ROW / 4, self.game.COLUMN / 4))
                 #self.game.apple2.set_position(position=(20, 20))
                 self.game.dual_playing = False
@@ -102,8 +102,8 @@ class MainMenu(Menu):
                 self.run_display = False
 
             elif self.state == "Dual Play":
-                self.game.snake.reset((self.game.ROW-1,self.game.COLUMN-1))
-                self.game.apple.set_position(position=(30, 30))
+                self.game.snake.reset((self.game.COLUMN-1, self.game.ROW-1))
+                # self.game.apple.set_position(position=(30, 30))
                 self.game.dual_playing = True
                 self.game.playing = True
                 self.run_display = False
@@ -273,7 +273,7 @@ class DualAutoInGameMenu(Menu):                                    # dual과 aut
                 self.run_display = False
             elif self.state == "Restart":
                 self.game.snake.reset((self.game.ROW-1, self.game.COLUMN-1), dir=np.array([0, -1]))
-                self.game.snake2.reset((0,0),dir=np.array([0, 1]))
+                self.game.snake2.reset((0, 0), dir=np.array([0, 1]))
                 self.run_display = False
             elif self.state == "Exit":
                 self.game.curr_menu = MainMenu(self.game)
