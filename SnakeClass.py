@@ -173,12 +173,29 @@ class Snake:
             if v[0] >= row or v[0] < 0 or v[1] >= col or v[1] < 0:
                 continue
             else :
-                node[v] = (apple_pos[0] - v[0])**2 + (apple_pos[1] - v[1])**2
+                node[v] = ((apple_pos[0] - v[0])**2 + (apple_pos[1] - v[1])**2)
 
             for bloc in self.bodys :
                 if v == tuple(bloc.pos) :
                     node[v] = INF
-        
+                
+                #가려는 방향이 세 방향으로 막혀있는지 표를 구성
+                if (np.array(v) - np.array(self.head.pos)) == DIRECTION['u'] and bloc.pos[1] <= v[1]:   #위쪽 세방향
+                    pass
+
+                elif (np.array(v) - np.array(self.head.pos)) == DIRECTION['d'] and bloc.pos[1] >= v[1]:     #아래쪽 세방향
+                    pass
+
+                elif (np.array(v) - np.array(self.head.pos)) == DIRECTION['r'] and bloc.pos[0] >= v[0]:     #오른쪽 세방향
+                    pass
+
+                elif (np.array(v) - np.array(self.head.pos)) == DIRECTION['l'] and bloc.pos[0] <= v[0]:     #왼쪽 세방향
+                    pass
+            
+            #세 방향이 막힌 곳은 INF - 1
+
+        #모든 방향이 막혔다면 꼬리와 가장 가까운 방향을 선택
+
         next_pos = np.array(min(node, key=node.get))
         next_dir = next_pos - self.head.pos
         self.turns[tuple(self.head.pos[:])] = next_dir

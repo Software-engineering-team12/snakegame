@@ -51,8 +51,8 @@ class Game():
                 self.reset_keys()
 
             if self.auto_playing == True :
-                pygame.time.delay(50)
-                clock.tick(10)
+                pygame.time.delay(30)
+                clock.tick(50)
                 app = self.apple.get_position()
                 self.snake.move_auto(app, self.ROW, self.COLUMN)
 
