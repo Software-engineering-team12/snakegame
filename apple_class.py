@@ -2,7 +2,7 @@ import pygame
 import random
 import SnakeClass
 
-row = col = 40
+row, col = 40, 40
 B_size = 20   # block size
 
 
@@ -18,6 +18,7 @@ class Apple:
     def draw(self, screen):
         self.rect_apple.x = B_size*self.rect_apple.x                                    # block size 만큼 곱해서 좌표 변경
         self.rect_apple.y = B_size*self.rect_apple.y
+        print(self.rect_apple.x, self.rect_apple.y)
         screen.blit(self.apple, self.rect_apple)
         self.rect_apple.x = self.rect_apple.x / B_size                                  # 다시 block size 만큼 나눠 주기
         self.rect_apple.y = self.rect_apple.y / B_size

@@ -1,6 +1,6 @@
 from pickle import TRUE
 import pygame
-from menu import MainMenu,SingleInGameMenu,ScoreMenu,DualAutoInGameMenu
+from menu import MainMenu, SingleInGameMenu, ScoreMenu, DualAutoInGameMenu
 from SnakeClass import Snake
 from apple_class import Apple
 import numpy as np
@@ -9,7 +9,7 @@ class Game():
     def __init__(self):
         pygame.init()
 
-        self.playing, self.dual_playing, self.running = False,False, True
+        self.playing, self.dual_playing, self.running = False, False, True
         self.UP_KEY, self.DOWN_KEY, self.LEFT_KEY, self.RIGHT_KEY, self.BACK_KEY = False, False, False, False, False
         self.W_KEY, self.A_KEY, self.S_KEY, self.D_KEY, self.ENTER_KEY = False, False, False, False, False
         self.WIDTH, self.HEIGHT = 800, 800
@@ -20,7 +20,7 @@ class Game():
         self.BLACK, self.WHITE, self.RED, self.BLUE = (0, 0, 0), (255, 255, 255), (255, 0, 0), (0, 0, 255)
         self.curr_menu = MainMenu(self)
         self.snake = Snake(self, (self.ROW / 2, self.COLUMN / 2))
-        self.apple = Apple((30, 30), self.snake)
+        self.apple = Apple((3, 30), snake=self.snake)
         self.name = "PLAYER"
         self.background = pygame.image.load("img/cau.png").convert_alpha()
 
@@ -35,9 +35,11 @@ class Game():
             self.new_snake()
         else:
             self.snake.load_img(player=0)
+            # self.apple = Apple((3, 30), snake=self.snake)
 
 
         clock = pygame.time.Clock()
+
 
         while self.playing:
 
