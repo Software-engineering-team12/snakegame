@@ -9,7 +9,7 @@ class Game():
     def __init__(self):
         pygame.init()
 
-        self.playing, self.dual_playing, self.running = False, False, True
+        self.playing, self.dual_playing, self.auto_playing, self.running = False, False, False, True
         self.UP_KEY, self.DOWN_KEY, self.LEFT_KEY, self.RIGHT_KEY, self.BACK_KEY = False, False, False, False, False
         self.W_KEY, self.A_KEY, self.S_KEY, self.D_KEY, self.ENTER_KEY = False, False, False, False, False
         self.WIDTH, self.HEIGHT = 1440, 720
@@ -20,7 +20,7 @@ class Game():
         self.BLACK, self.WHITE, self.RED, self.BLUE = (0, 0, 0), (255, 255, 255), (255, 0, 0), (0, 0, 255)
         self.curr_menu = MainMenu(self)
         self.snake = Snake(self, (self.ROW / 2, self.COLUMN / 2))
-        self.apple = Apple((3, 30), snake=self.snake)
+        self.apple = Apple((30, 30), snake=self.snake)
         self.name = "PLAYER"
         self.background = pygame.image.load("img/cau.png").convert_alpha()
 
@@ -45,7 +45,7 @@ class Game():
 
             self.check_events()
             
-            if self.dual_playing == False:
+            if self.dual_playing == False and self.auto_playing == False:         # Single playing 모드
 
                 # Trigger InGame Menu
                 if self.BACK_KEY:
@@ -67,7 +67,7 @@ class Game():
                 self.snake.draw(self.display)
                 self.apple.draw(self.display)
             
-            else :
+            elif self.dual_playing == True and self.auto_playing == False:              # Dual playing 모드
                 if self.BACK_KEY:
                     # Pause and InGame Menu
                     self.curr_menu = DualAutoInGameMenu(self)
@@ -97,6 +97,24 @@ class Game():
                 self.snake2.draw(self.display)
                 self.apple2.draw(self.display)
 
+            else:                                                                   # Auto playing 모드
+                if self.BACK_KEY:
+                    # Pause and InGame Menu
+                    self.curr_menu = DualAutoInGameMenu(self)
+                    self.curr_menu.display_menu()
+                    self.reset_keys()
+
+                pygame.time.delay(50)
+                clock.tick(10)
+
+                self.snake.check_direction(self.apple)
+                self.check_wall_hit(self.snake)
+                self.check_eat_apple(self.snake, self.apple)
+                self.check_body_hit(self.snake)
+                self.display.fill((255, 255, 255))
+                self.drawGrid()
+                self.snake.draw(self.display)
+                self.apple.draw(self.display)
 
 
             self.window.blit(self.display, (0, 0))
@@ -134,15 +152,17 @@ class Game():
     def check_wall_hit(self, snake, player=1):
         headPos = snake.head.pos
         if headPos[0] >= self.COLUMN or headPos[0] < 0 or headPos[1] >= self.ROW or headPos[1] < 0:
-            if self.dual_playing == False :
+            if self.dual_playing == False and self.auto_playing == False:
                 self.curr_menu = ScoreMenu(self)
                 self.name = self.curr_menu.input_name()
                 self.store_score(len(snake.bodys) - 1)
                 self.curr_menu.display_score(len(snake.bodys) - 1)
-            else :
+            elif self.dual_playing == True and self.auto_playing == False:
                 self.curr_menu = ScoreMenu(self)
-                print(headPos[0], headPos[1], player)
                 self.curr_menu.display_winner(2 if player == 1 else 1)
+            else:
+                self.curr_menu = ScoreMenu(self)
+                self.curr_menu.display_score(len(snake.bodys) - 1)
 
     
     #뱀이 자기 몸과 닿았을 때 처리
@@ -150,17 +170,19 @@ class Game():
         headPos = snake.head.pos
         for x in range(1, len(snake.bodys)):
             if headPos[0] == snake.bodys[x].pos[0] and headPos[1] == snake.bodys[x].pos[1]:
-                if self.dual_playing == False:
+                if self.dual_playing == False and self.auto_playing == False:
                     self.curr_menu = ScoreMenu(self)
                     self.name = self.curr_menu.input_name()
                     self.store_score(len(self.snake.bodys) - 1)
                     self.curr_menu.display_score(len(snake.bodys) - 1)
-                    break
-                else:
+                    # break
+                elif self.dual_playing == True and self.auto_playing == False:
                     self.curr_menu = ScoreMenu(self)
                     self.curr_menu.display_winner(2 if player == 1 else 1)
-
-                    break
+                    # break
+                else:
+                    self.curr_menu = ScoreMenu(self)
+                    self.curr_menu.display_score(len(snake.bodys) - 1)
 
     def check_snake_hit(self, snake1, snake2):
         headPos = snake1.head.pos

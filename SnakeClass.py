@@ -162,7 +162,126 @@ class Snake:
             else:
                 bloc.pos = p + d
 
-    # grow 메소드에서는 뱀이 사과를 먹으면 길이가 늘어나는 행동을 취한다.
+    def check_direction(self, apple):
+        apple_x, apple_y = apple.get_position()
+        move_x = self.bodys[0].pos[0] - apple_x
+        move_y = self.bodys[0].pos[1] - apple_y
+        if move_x != 0:
+            if move_x > 0:
+                if self.check_auto_move(DIRECTION['l']):
+                    self.move_auto(DIRECTION['l'])
+                elif move_y > 0:
+                    if self.check_auto_move(DIRECTION['u']):
+                        self.move_auto(DIRECTION['u'])
+                else:
+                    self.check_auto_move(DIRECTION['d'])
+                    self.move_auto(DIRECTION['d'])
+                    #elif self.check_auto_move(DIRECTION['d']):
+                        #self.move_auto(DIRECTION['d'])
+                    #elif self.check_auto_move(DIRECTION['r']):
+                        #self.move_auto(DIRECTION['r'])
+                #elif move_y < 0:
+                    #if self.check_auto_move(DIRECTION['d']):
+                        #self.move_auto(DIRECTION['d'])
+                    #elif self.check_auto_move(DIRECTION['u']):
+                        #self.move_auto(DIRECTION['u'])
+                    #elif self.check_auto_move(DIRECTION['r']):
+                        #self.move_auto(DIRECTION['r'])
+            elif move_x < 0:
+                if self.check_auto_move(DIRECTION['r']):
+                    self.move_auto(DIRECTION['r'])
+                elif move_y > 0:
+                    if self.check_auto_move(DIRECTION['u']):
+                        self.move_auto(DIRECTION['u'])
+                else:
+                    self.check_auto_move(DIRECTION['d'])
+                    self.move_auto(DIRECTION['d'])
+                    #elif self.check_auto_move(DIRECTION['d']):
+                        #self.move_auto(DIRECTION['d'])
+                    #elif self.check_auto_move(DIRECTION['l']):
+                        #self.move_auto(DIRECTION['l'])
+                #elif move_y < 0:
+                    #if self.check_auto_move(DIRECTION['d']):
+                        #self.move_auto(DIRECTION['d'])
+                    #elif self.check_auto_move(DIRECTION['u']):
+                        #self.move_auto(DIRECTION['u'])
+                    #elif self.check_auto_move(DIRECTION['l']):
+                        #self.move_auto(DIRECTION['l'])
+        elif move_y != 0:
+            if move_y > 0:
+                if self.check_auto_move(DIRECTION['u']):
+                    self.move_auto(DIRECTION['u'])
+                elif move_x > 0:
+                    self.check_auto_move(DIRECTION['l'])
+                    self.move_auto(DIRECTION['l'])
+                else:
+                    self.check_auto_move(DIRECTION['r'])
+                    self.move_auto(DIRECTION['r'])
+                #elif move_x > 0:
+                    #if self.check_auto_move(DIRECTION['l']):
+                        #self.move_auto(DIRECTION['l'])
+                    #elif self.check_auto_move(DIRECTION['r']):
+                        #self.move_auto(DIRECTION['r'])
+                    #elif self.check_auto_move(DIRECTION['d']):
+                        #self.move_auto(DIRECTION['d'])
+                #elif move_x < 0:
+                    #if self.check_auto_move(DIRECTION['r']):
+                        #self.move_auto(DIRECTION['r'])
+                    #elif self.check_auto_move(DIRECTION['l']):
+                        #self.move_auto(DIRECTION['l'])
+                    #elif self.check_auto_move(DIRECTION['d']):
+                        #self.move_auto(DIRECTION['d'])
+            elif move_y < 0:
+                if self.check_auto_move(DIRECTION['d']):
+                    self.move_auto(DIRECTION['d'])
+                elif move_x > 0:
+                    self.check_auto_move(DIRECTION['l'])
+                    self.move_auto(DIRECTION['l'])
+                else:
+                    self.check_auto_move(DIRECTION['r'])
+                    self.move_auto(DIRECTION['r'])
+                #elif move_x > 0:
+                    #if self.check_auto_move(DIRECTION['l']):
+                        #self.move_auto(DIRECTION['l'])
+                    #elif self.check_auto_move(DIRECTION['r']):
+                        #self.move_auto(DIRECTION['r'])
+                    #elif self.check_auto_move(DIRECTION['u']):
+                        #self.move_auto(DIRECTION['u'])
+                #elif move_x < 0:
+                    #if self.check_auto_move(DIRECTION['r']):
+                        #self.move_auto(DIRECTION['r'])
+                    #elif self.check_auto_move(DIRECTION['l']):
+                        #self.move_auto(DIRECTION['l'])
+                    #elif self.check_auto_move(DIRECTION['u']):
+                        #self.move_auto(DIRECTION['u'])
+
+    def move_auto(self, direction):
+
+        self.turns[tuple(self.head.pos[:])] = direction
+        self.key = direction
+
+        for i, bloc in enumerate(self.bodys):
+            p = bloc.pos[:]
+            d = bloc.direction
+            if tuple(p) in self.turns:
+                bloc.pos = p + self.turns[tuple(p)]
+                bloc.direction = self.turns[tuple(p)]
+                if i == len(self.bodys) - 1:
+                    self.turns.pop(tuple(p))
+            else:
+                bloc.pos = p + d
+
+    # 다음 이동 할 곳이 뱀의 몸통과 겹치는지 확인한다
+    def check_auto_move(self, dic):
+        x = self.bodys[0].pos[0] - int(dic[0])
+        y = self.bodys[0].pos[1] - int(dic[1])
+        flag = True
+        for i in self.bodys:
+            if (i.pos[0], i.pos[1]) == (x, y):
+                flag = False
+        return flag
+
+                # grow 메소드에서는 뱀이 사과를 먹으면 길이가 늘어나는 행동을 취한다.
     def grow(self):
         self.bodys.append(Snake.Body(self.tail.pos - self.tail.direction, self.tail.direction))
         self.tail = self.bodys[-1]
