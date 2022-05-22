@@ -16,11 +16,11 @@
   
 ## About this game  
   
-  <br>이 게임은 중앙대 수호신 푸앙이가 소프트웨어학부 학생들을 위해 A+을 수집해주는 게임입니다. 
-
-  키보드의 방향키를 이용하여 푸앙이가 A+를 수집할 수 있도록 도와주세요.
+  <br>
   
-  많은 A+를 모을수록 학생들의 학점은 풍족해집니다. <br> <br>
+  #### 수정 필요 
+  
+  <br> <br>
   
   This game is a game where the guardian of Chung-Ang University collects A+ for software students.
 
@@ -50,24 +50,89 @@
 ## How To Play
   
   ### 1. When you install and play the game, the main menu appears
-    * START GAME
-      - Start the game
+    * Single Play
+      - Start the single play mode game
+    
+    * Dual Play
+       - Start the dual play mode game
+  
+    * Auto Play 
+       - Start the Auto play mode game 
   
     * LOAD
-      - Load saved game information, then run the game
+      - Load save <strong> single play mode game </strong> information, then run the game
   
     * RANKING
-      - Display top 5 user nicknames and scores
+      - Display top 5 user nicknames and scores (aboug single play)
   
     * EXIT
       - Exit the game
+  <Br>
   
   ### 2. Game Rules
-  Let's make PUANG get A+
   
-  Use ⇦ ⇧ ⇨ ⇩ 
+  Collect as many A+ as possible.
   
-  If PUANG "eat" A+, the score increases.
+  When the character's head reaches A+ position, the user gets 1 point and the character's length increases by 1.
+  
+  The number of A+ obtained at the end of the game is the final score.
+  
+    <Br>
+  
+  #### 2-1 Single Play Mode
+  
+    - Use ⇦ ⇧ ⇨ ⇩ 
+    - Only 1 person can play
+  
+  -  When you press the <strong> ESC key </strong> while the game is in progress, <strong> The Ingame Menu </strong> appears <br>
+        * RESUME 
+          - continues to play the paused game
+  
+        * RESTART 
+           - starts a new game, instead of the paused game
+  
+        * SAVE
+            - stores the current game status and returns to the main menu
+  
+        * EXIT
+            - returns to the main menu without saving the current game status
+  
+<Br>
+  
+  #### 2-2 Dual Play Mode
+  
+    - Player1 uses ⇦ ⇧ ⇨ ⇩ 
+    - Player2 uses w-a-s-d
+    - 2 people can play
+  
+  -  When you press the <strong> ESC key </strong> while the game is in progress, <strong> The Ingame Menu </strong> appears <br>
+        * RESUME 
+          - continues to play the paused game
+  
+        * RESTART 
+           - starts a new game, instead of the paused game
+  
+        * EXIT
+            - returns to the main menu without saving the current game status
+ <br>
+  
+   #### 2-3 Single Play Mode
+  
+    - The character moves automatically.
+  
+  -  When you press the <strong> ESC key </strong> while the game is in progress, <strong> The Ingame Menu </strong> appears <br>
+        * RESUME 
+          - continues to play the paused game
+  
+        * RESTART 
+           - starts a new game, instead of the paused game
+  
+        * EXIT
+            - returns to the main menu without saving the current game status
+  
+<Br>
+  
+  
   
   #### Caution: The conditions under which the game ends are as follows
     * Running into the edge of the board
@@ -76,7 +141,7 @@
     - When the game is over, the nickname input window appears. Enter a nickname to save your score and nickname.
   <br>
 
-  ### 3. When you press the ES key while the game is in progress
+  ### 3. When you press the ESC key while the game is in progress
   The Ingame Menu appears<br>
   
     * RESUME 
