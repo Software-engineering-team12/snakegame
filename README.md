@@ -16,20 +16,35 @@
   
 ## About this game  
   
+  임포스터가 되어 A+을 훔쳐보세요! 
+  
   <br>
   
-  #### 수정 필요 
+  이 게임은 널리 알려진 snake game의 일종으로, single play, dual play, auto play 이 3가지 종류의 게임 모드가 있습니다.
   
-  <br> <br>
+  This game is a kind of widely known snake game, there are 3 game modes: single play, dual play and auto play.
   
-  This game is a game where the guardian of Chung-Ang University collects A+ for software students.
-
-  Please help PUANG collect A+ using the direction key on the keyboard.
-
-  The more A+ you collect, the richer the students' grades become. <br><br>
-  [푸앙이](https://www.cau.ac.kr/cms/FR_CON/index.do?MENU_ID=2540)
+  <br>
   
-  <img src="/img/head_up.png" width="50" height="50" >
+  - single play : 가능한 많은 A+를 훔치세요 (steal as many A+s as possible)
+  
+  - dual play : 다른 플레이어와 A+를 두고 경쟁을 하세요 (Compete with other players for A+)
+  
+  - auto play : 자동 플레이로 편안하게 A+을 훔치세요 (Steal A+ comfortably with auto play)
+  
+   <br><br>
+  
+  -----
+  
+  #### character
+  
+  [임포스터 : player1] 
+  
+  <img src="/img/head_down1.png" width="50" height="50" > <img src="/img/head_left1.png" width="50" height="50" > <img src="/img/head_right1.png" width="50" height="50" > <img src="/img/head_down1.png" width="50" height="50" >
+  
+  [임포스터 : player2]
+  
+  <img src="/img/head_down2.png" width="50" height="50" > <img src="/img/head_left2.png" width="50" height="50" > <img src="/img/head_right2.png" width="50" height="50" > <img src="/img/head_down2.png" width="50" height="50" >
   
   [A+](https://www.vecteezy.com/vector-art/554137-a-grade-text-graphic)
   
@@ -63,21 +78,26 @@
       - Load save <strong> single play mode game </strong> information, then run the game
   
     * RANKING
-      - Display top 5 user nicknames and scores (aboug single play)
+      - Display top 5 user nicknames and scores (about single play)
   
     * EXIT
       - Exit the game
-  <Br>
+  <br>
   
   ### 2. Game Rules
   
   Collect as many A+ as possible.
   
-  When the character's head reaches A+ position, the user gets 1 point and the character's length increases by 1.
+  <strong> <Single & Auto> </strong>
+      
+    When the character's head reaches A+ position, the user gets 1 point and the character's length increases by 1.
   
-  The number of A+ obtained at the end of the game is the final score.
+    The number of A+ obtained at the end of the game is the final score.
   
-    <Br>
+  <strong> < Dual > </strong>
+    
+    The player who survives longer than the other players wins. 
+  <br>
   
   #### 2-1 Single Play Mode
   
@@ -135,24 +155,16 @@
   
   
   #### Caution: The conditions under which the game ends are as follows
+  
     * Running into the edge of the board
     * By running into its own body 
+    * running into another characters’s body (only dual play mode)
   
-    - When the game is over, the nickname input window appears. Enter a nickname to save your score and nickname.
+    When the game is over
+  
+      - SINGLE PLAY  : the nickname input window appears. Enter a nickname to save your score and nickname. And then, final score is displayed.
+      - DUAL PLAY : the winner is displayed.
+      - AUTO PLAY : final score is displayed.
+  
   <br>
 
-  ### 3. When you press the ESC key while the game is in progress
-  The Ingame Menu appears<br>
-  
-    * RESUME 
-      - continues to play the paused game
-  
-    * RESTART 
-      - starts a new game, instead of the paused game
-  
-    * SAVE
-      - stores the current game status and returns to the main menu
-  
-    * EXIT
-      - returns to the main menu without saving the current game status
-  <br>
