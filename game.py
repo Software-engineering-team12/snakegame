@@ -56,9 +56,8 @@ class Game():
                 clock.tick(10)
                 self.snake.move_1P()
 
-                self.check_wall_hit(self.snake)
+                self.check_hit(self.snake)
                 self.check_eat_apple(self.snake, self.apple)
-                self.check_body_hit(self.snake)
                 
                 self.display.fill((255, 255, 255))
                 self.drawGrid()
@@ -77,14 +76,11 @@ class Game():
                 self.snake.move_1P()
                 self.snake2.move_2P()
 
-                self.check_wall_hit(self.snake, 1)
-                self.check_wall_hit(self.snake2, 2)
+                self.check_hit(self.snake, 1)
+                self.check_hit(self.snake2, 2)
 
                 self.check_eat_apple(self.snake, self.apple, self.apple2)
                 self.check_eat_apple(self.snake2, self.apple, self.apple2)
-
-                self.check_body_hit(self.snake, 1)
-                self.check_body_hit(self.snake2, 2)
                 
                 self.check_snake_hit(self.snake, self.snake2)
 
@@ -172,7 +168,6 @@ class Game():
 
                     break 
 '''
-
 
     def check_snake_hit(self, snake1, snake2):
         headPos = snake1.head.pos
