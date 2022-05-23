@@ -109,7 +109,12 @@ class MainMenu(Menu):
                 self.run_display = False
 
             elif self.state == "Auto Play":
-                pass                            # 추가 필요
+                self.game.snake.reset((self.game.ROW - 1, self.game.COLUMN - 1))
+                self.game.apple.set_position(position=(30, 30))
+                self.game.auto_playing = True
+                self.game.playing = True
+                self.run_display = False
+
             elif self.state == "Load":
                 save_bodys = []
                 load_file = open('game_file.txt', 'r')
@@ -278,7 +283,10 @@ class DualAutoInGameMenu(Menu):                                    # dual과 aut
             elif self.state == "Exit":
                 self.game.curr_menu = MainMenu(self.game)
                 self.run_display = False
+                self.game.dual_playing = False
+                self.game.auto_playing = False
                 self.game.playing = False
+
 
 
 class ScoreMenu(Menu):                               # single과 dual 게임 종로 시 나타나는 메뉴로 single시 display_score 호출
@@ -369,9 +377,11 @@ class ScoreMenu(Menu):                               # single과 dual 게임 종
                 self.run_display = False
             elif self.state == "Exit":
                 self.game.curr_menu = MainMenu(self.game)
-                self.run_display = False
+                self.game.dual_playing = False
+                self.game.auto_playing = False
                 self.game.playing = False
-                
+                self.run_display = False
+
 
 class RankMenu(Menu):
     def __init__(self, game):

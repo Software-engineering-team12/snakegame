@@ -10,7 +10,7 @@ class Game():
     def __init__(self):
         pygame.init()
 
-        self.playing, self.dual_playing ,self.running = False,False, True
+        self.playing, self.dual_playing,self.auto_playing, self.running = False,False,False,True
         self.UP_KEY, self.DOWN_KEY, self.LEFT_KEY, self.RIGHT_KEY, self.BACK_KEY = False, False, False, False, False
         self.W_KEY,self.A_KEY,self.S_KEY,self.D_KEY, self.ENTER_KEY = False, False, False, False, False
         self.WIDTH, self.HEIGHT = 920, 920
@@ -44,7 +44,7 @@ class Game():
             # print(self.snake.head.pos[0],self.snake.head.pos[1])
             self.check_events()
             
-            if self.dual_playing == False :
+            if self.dual_playing == False and self.auto_playing == False:
 
                 # Trigger InGame Menu
                 if self.BACK_KEY:
@@ -66,7 +66,7 @@ class Game():
                 self.snake.draw(self.display)
                 self.apple.draw(self.display)
             
-            else :
+            elif self.dual_playing == True :
                 if self.BACK_KEY:
                     # Pause and InGame Menu
                     self.curr_menu = DualAutoInGameMenu(self)
@@ -96,7 +96,41 @@ class Game():
                 self.snake2.draw(self.display)
                 self.apple2.draw(self.display)
 
+            elif self.auto_playing == True:
+                if self.BACK_KEY:
+                    # Pause and InGame Menu
+                    self.curr_menu = DualAutoInGameMenu(self)
+                    self.curr_menu.display_menu()
+                    self.reset_keys()
 
+                pygame.time.delay(10)
+                clock.tick(1000)
+                finallist = self.a_star()
+                if finallist:
+                    next = finallist[-1]
+                    head = self.snake.head.pos
+                    # print(finallist)
+                    # print(head)
+
+                    if next[0] == head[0] and next[1] == head[1] + 1:
+                        self.DOWN_KEY = True
+                    elif next[0] == head[0] and next[1] == head[1] - 1:
+                        self.UP_KEY = True
+                    elif next[0] == head[0] + 1 and next[1] == head[1]:
+                        self.RIGHT_KEY = True
+                    elif next[0] == head[0] - 1 and next[1] == head[1]:
+                        self.LEFT_KEY = True
+
+                self.snake.move_1P()
+
+                self.check_wall_hit(self.snake)
+                self.check_eat_apple(self.snake, self.apple)
+                self.check_body_hit(self.snake)
+
+                self.display.fill((255, 255, 255))
+                self.drawGrid()
+                self.snake.draw(self.display)
+                self.apple.draw(self.display)
 
             self.window.blit(self.display, (0, 0))
             pygame.display.update()
@@ -150,66 +184,6 @@ class Game():
                         if flag2:
                             board[next_x][next_y] = (curnode[2],curnode[3])
                             heapq.heappush(openlist,(movecost+abs(next_x-target[0])+abs(next_y-target[1]),movecost,next_x,next_y))
-
-
-
-
-
-
-
-
-
-    def auto_play(self):
-
-        self.snake.load_img(player=0)
-
-        clock = pygame.time.Clock()
-
-        while self.playing:
-
-            self.check_events()
-
-            # Trigger InGame Menu
-            if self.BACK_KEY:
-                # Pause and InGame Menu
-                self.curr_menu = SingleInGameMenu(self)
-                self.curr_menu.display_menu()
-                self.reset_keys()
-
-            pygame.time.delay(10)
-            clock.tick(1000)
-            finallist = self.a_star()
-            if finallist:
-                next = finallist[-1]
-                head = self.snake.head.pos
-            # print(finallist)
-            # print(head)
-
-                if next[0] == head[0] and next[1] == head[1] + 1:# 다음 방향이 오른쪽
-                    self.DOWN_KEY = True
-                elif  next[0] == head[0] and next[1] == head[1] - 1: #다음 방향이 왼쪽
-                    self.UP_KEY = True
-                elif  next[0] == head[0] + 1 and next[1] == head[1]: #다음 방향이 아래쪽
-                    self.RIGHT_KEY = True
-                elif  next[0] == head[0] - 1 and next[1] == head[1]: #다음 방향이 위쪽
-                    self.LEFT_KEY = True
-
-            self.snake.move_1P()
-
-            self.check_wall_hit(self.snake)
-            self.check_eat_apple(self.snake, self.apple)
-            self.check_body_hit(self.snake)
-
-            self.display.fill((255, 255, 255))
-            self.drawGrid()
-            self.snake.draw(self.display)
-            self.apple.draw(self.display)
-
-
-
-            self.window.blit(self.display, (0, 0))
-            pygame.display.update()
-            self.reset_keys()
 
 
     def new_snake(self) :
