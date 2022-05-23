@@ -136,38 +136,6 @@ class Game():
                 self.curr_menu = ScoreMenu(self)
                 self.curr_menu.display_winner(2 if player == 1 else 1)
 
-'''
-    #뱀이 맵 밖으로 나갔을 때 처리
-    def check_wall_hit(self, snake, player=1):
-        headPos = snake.head.pos     
-        if headPos[0] >= self.COLUMN or headPos[0] < 0 or headPos[1] >= self.ROW or headPos[1] < 0:
-            if self.dual_playing == False:
-                self.curr_menu = ScoreMenu(self)
-                self.name = self.curr_menu.input_name()
-                self.store_score(len(snake.bodys) - 1)
-                self.curr_menu.display_score(len(snake.bodys) - 1)
-            else:
-                self.curr_menu = ScoreMenu(self)
-                self.curr_menu.display_winner(2 if player == 1 else 1)
-
-    
-    #뱀이 자기 몸과 닿았을 때 처리
-    def check_body_hit(self, snake, player=1):
-        headPos = snake.head.pos
-        for x in range(1, len(snake.bodys)):
-            if headPos[0] == snake.bodys[x].pos[0] and headPos[1] == snake.bodys[x].pos[1]:
-                if self.dual_playing == False:
-                    self.curr_menu = ScoreMenu(self)
-                    self.name = self.curr_menu.input_name()
-                    self.store_score(len(self.snake.bodys) - 1)
-                    self.curr_menu.display_score(len(snake.bodys) - 1)
-                    break
-                else:
-                    self.curr_menu = ScoreMenu(self)
-                    self.curr_menu.display_winner(2 if player == 1 else 1)
-
-                    break 
-'''
 
     def check_snake_hit(self, snake1, snake2):
         headPos = snake1.head.pos
