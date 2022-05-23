@@ -20,7 +20,7 @@ class Game():
         self.BLACK, self.WHITE, self.RED, self.BLUE = (0, 0, 0), (255, 255, 255), (255, 0, 0), (0, 0, 255)
         self.curr_menu = MainMenu(self)
         self.snake = Snake(self, (self.ROW / 2, self.COLUMN / 2))
-        self.apple = Apple((3, 30), snake=self.snake)
+        self.apple = Apple((30, 30), snake=self.snake)
         self.name = "PLAYER"
         self.background = pygame.image.load("img/cau.png").convert_alpha()
 
@@ -34,7 +34,7 @@ class Game():
             self.snake.load_img(player=1)
             self.new_snake()
         else:
-            self.snake.load_img(player=0)
+            self.snake.load_img(player=1)
             # self.apple = Apple((3, 30), snake=self.snake)
 
 
@@ -96,8 +96,6 @@ class Game():
                 self.apple.draw(self.display)
                 self.snake2.draw(self.display)
                 self.apple2.draw(self.display)
-
-
 
             self.window.blit(self.display, (0, 0))
             pygame.display.update()
