@@ -75,7 +75,7 @@
        - Start the Auto play mode game 
   
     * LOAD
-      - Load save <strong> single play mode game </strong> information, then run the game
+      - Load save single play mode game information, then run the game
   
     * RANKING
       - Display top 5 user nicknames and scores (about single play)
