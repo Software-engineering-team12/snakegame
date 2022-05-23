@@ -31,11 +31,9 @@ class Game():
     def game_loop(self):
 
         if self.dual_playing == True:
-            self.snake.load_img(player=1)
             self.new_snake()
-        else:
-            self.snake.load_img(player=1)
-            # self.apple = Apple((3, 30), snake=self.snake)
+        self.snake.load_img(player=1)
+
 
 
         clock = pygame.time.Clock()
@@ -82,8 +80,8 @@ class Game():
                 self.check_wall_hit(self.snake, 1)
                 self.check_wall_hit(self.snake2, 2)
 
-                self.check_eat_apple_dual(self.snake, self.apple, self.apple2)
-                self.check_eat_apple_dual(self.snake2, self.apple, self.apple2)
+                self.check_eat_apple(self.snake, self.apple, self.apple2)
+                self.check_eat_apple(self.snake2, self.apple, self.apple2)
 
                 self.check_body_hit(self.snake, 1)
                 self.check_body_hit(self.snake2, 2)
@@ -105,41 +103,55 @@ class Game():
         self.snake2 = Snake(self, (0, 0), dir=np.array([0, 1]), player=2)
         self.apple2 = Apple((20, 20), self.snake2)
     
-    #뱀이 사과를 먹었을 때 처리
-    def check_eat_apple(self, snake, apple):
+    # 뱀이 사과를 먹었을 때 처리 - apple2가 None이면 single play에서 처리, None 아니면 dual
+    def check_eat_apple(self, snake, apple1, apple2=None):
         headPos = snake.head.pos
-        appPos = apple.get_position()
+        appPos = apple1.get_position()
 
         if headPos[0] == appPos[0] and headPos[1] == appPos[1]:
             snake.grow()
-            apple.move()
-
-    #뱀이 사과를 먹었을 때 처리(듀얼플레이)
-    def check_eat_apple_dual(self, snake, apple1, apple2):
-        headPos = snake.head.pos
-        appPos1 = apple1.get_position()
-        appPos2 = apple2.get_position()
-
-        if headPos[0] == appPos1[0] and headPos[1] == appPos1[1]:
-            snake.grow()
             apple1.move()
 
-        if headPos[0] == appPos2[0] and headPos[1] == appPos2[1]:
-            snake.grow()
-            apple2.move()
+        if apple2 != None:
+            appPos2 = apple2.get_position()
+            if headPos[0] == appPos2[0] and headPos[1] == appPos2[1]:
+                snake.grow()
+                apple2.move()
 
-    #뱀이 맵 밖으로 나갔을 때 처리
-    def check_wall_hit(self, snake, player=1):
+   # 뱀이 맵 밖으로 나가는 경우와 자기 몸에 닿아 죽는 경우 처리
+    def check_hit(self, snake, player=1):
         headPos = snake.head.pos
+        death = False
+         # 뱀이 맵 밖으로 나갔을 때 처리
         if headPos[0] >= self.COLUMN or headPos[0] < 0 or headPos[1] >= self.ROW or headPos[1] < 0:
-            if self.dual_playing == False :
+            death = True
+        for x in range(1, len(snake.bodys)):                                     # 뱀이 자기 몸과 닿았을 때 처리
+            if headPos[0] == snake.bodys[x].pos[0] and headPos[1] == snake.bodys[x].pos[1]:
+                death = True
+                break
+
+        if death == True:
+            if self.dual_playing == False:
                 self.curr_menu = ScoreMenu(self)
                 self.name = self.curr_menu.input_name()
                 self.store_score(len(snake.bodys) - 1)
                 self.curr_menu.display_score(len(snake.bodys) - 1)
-            else :
+            else:
                 self.curr_menu = ScoreMenu(self)
-                print(headPos[0], headPos[1], player)
+                self.curr_menu.display_winner(2 if player == 1 else 1)
+
+'''
+    #뱀이 맵 밖으로 나갔을 때 처리
+    def check_wall_hit(self, snake, player=1):
+        headPos = snake.head.pos     
+        if headPos[0] >= self.COLUMN or headPos[0] < 0 or headPos[1] >= self.ROW or headPos[1] < 0:
+            if self.dual_playing == False:
+                self.curr_menu = ScoreMenu(self)
+                self.name = self.curr_menu.input_name()
+                self.store_score(len(snake.bodys) - 1)
+                self.curr_menu.display_score(len(snake.bodys) - 1)
+            else:
+                self.curr_menu = ScoreMenu(self)
                 self.curr_menu.display_winner(2 if player == 1 else 1)
 
     
@@ -158,7 +170,9 @@ class Game():
                     self.curr_menu = ScoreMenu(self)
                     self.curr_menu.display_winner(2 if player == 1 else 1)
 
-                    break
+                    break 
+'''
+
 
     def check_snake_hit(self, snake1, snake2):
         headPos = snake1.head.pos
@@ -283,3 +297,5 @@ class Game():
 
     def get_apple(self):
         return self.apple.get_position()
+
+
