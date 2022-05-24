@@ -4,12 +4,13 @@ from menu import MainMenu, SingleInGameMenu, ScoreMenu, DualAutoInGameMenu
 from SnakeClass import Snake
 from apple_class import Apple
 import numpy as np
+import heapq
 
 class Game():
     def __init__(self):
         pygame.init()
 
-        self.playing, self.dual_playing, self.running = False, False, True
+        self.playing, self.dual_playing, self.auto_playing, self.running = False, False, False, True
         self.UP_KEY, self.DOWN_KEY, self.LEFT_KEY, self.RIGHT_KEY, self.BACK_KEY = False, False, False, False, False
         self.W_KEY, self.A_KEY, self.S_KEY, self.D_KEY, self.ENTER_KEY = False, False, False, False, False
         self.WIDTH, self.HEIGHT = 1440, 720
@@ -43,7 +44,7 @@ class Game():
 
             self.check_events()
             
-            if self.dual_playing == False:
+            if self.dual_playing == False and self.auto_playing == False:
 
                 # Trigger InGame Menu
                 if self.BACK_KEY:
@@ -64,7 +65,7 @@ class Game():
                 self.snake.draw(self.display)
                 self.apple.draw(self.display)
             
-            else :
+            elif self.dual_playing == True :
                 if self.BACK_KEY:
                     # Pause and InGame Menu
                     self.curr_menu = DualAutoInGameMenu(self)
@@ -91,9 +92,96 @@ class Game():
                 self.snake2.draw(self.display)
                 self.apple2.draw(self.display)
 
+            elif self.auto_playing == True:
+
+                if self.BACK_KEY:
+                    # Pause and InGame Menu
+                    self.curr_menu = DualAutoInGameMenu(self)
+                    self.curr_menu.display_menu()
+                    self.reset_keys()
+
+                pygame.time.delay(10)
+                clock.tick(1000)
+                finallist = self.a_star()
+                if finallist:
+                    next = finallist[-1]
+                    head = self.snake.head.pos
+                    # print(finallist)
+                    # print(head)
+
+                    if next[0] == head[0] and next[1] == head[1] + 1:
+                        self.DOWN_KEY = True
+                    elif next[0] == head[0] and next[1] == head[1] - 1:
+                        self.UP_KEY = True
+                    elif next[0] == head[0] + 1 and next[1] == head[1]:
+                        self.RIGHT_KEY = True
+                    elif next[0] == head[0] - 1 and next[1] == head[1]:
+                        self.LEFT_KEY = True
+
+                self.snake.move_1P()
+
+                self.check_hit(self.snake)
+                self.check_eat_apple(self.snake, self.apple)
+
+
+                self.display.fill((255, 255, 255))
+                self.drawGrid()
+                self.snake.draw(self.display)
+                self.apple.draw(self.display)
+
             self.window.blit(self.display, (0, 0))
             pygame.display.update()
             self.reset_keys()
+
+    def a_star(self):
+        board = [[1 for _ in range(self.ROW)] for _ in range(self.COLUMN)]
+        dx = [1, -1, 0, 0]
+        dy = [0, 0, -1, 1]
+        for body in (self.snake.bodys):
+            board[int(body.pos[0])][int(body.pos[1])] = 0
+
+        target = self.apple.get_position()
+        start = (int(self.snake.head.pos[0]), int(self.snake.head.pos[1]))
+
+        h = abs(start[0] - target[0]) + abs(start[1] - target[1])
+        openlist = []
+        closelist = []
+        heapq.heappush(openlist, (h, 0, start[0], start[1]))  # f,g,x,y,px,py
+
+        while openlist:
+            curnode = heapq.heappop(openlist)
+            closelist.append(curnode)
+
+            if curnode[2] == target[0] and curnode[3] == target[1]:
+                final_list = []
+                targetcurnode = target
+                while targetcurnode != start:
+                    final_list.append(targetcurnode)
+                    targetcurnode = board[targetcurnode[0]][targetcurnode[1]]
+
+                return final_list
+
+            for i in range(4):
+                next_x = curnode[2] + dx[i]
+                next_y = curnode[3] + dy[i]
+                if 0 <= next_x < self.COLUMN and 0 <= next_y < self.ROW and board[next_x][next_y] != 0:
+                    flag = True
+                    for close in closelist:
+                        if close[2] == next_x and close[3] == next_y:
+                            flag = False
+                            break
+                    if flag:
+                        movecost = curnode[1] + 1
+                        flag2 = True
+                        for open in openlist:
+                            if open[2] == next_x and open[3] == next_y:
+                                flag2 = False
+                                break
+                        if flag2:
+                            board[next_x][next_y] = (curnode[2], curnode[3])
+                            heapq.heappush(openlist, (
+                            movecost + abs(next_x - target[0]) + abs(next_y - target[1]), movecost, next_x, next_y))
+
 
     def new_snake(self):
         self.snake2 = Snake(self, (0, 0), dir=np.array([0, 1]), player=2)
