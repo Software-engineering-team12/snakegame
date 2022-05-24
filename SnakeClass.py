@@ -168,6 +168,8 @@ class Snake:
                 tuple(self.head.pos + DIRECTION['d']) : INF, 
                 tuple(self.head.pos + DIRECTION['l']) : INF, 
                 tuple(self.head.pos + DIRECTION['r']) : INF}
+
+        #side = [(0,0), (0, col-1), (row-1, 0), (row-1, col-1)]
         
         for v in node:
             if v[0] >= row or v[0] < 0 or v[1] >= col or v[1] < 0:
@@ -177,61 +179,88 @@ class Snake:
 
 
             cos = [0, 0, 0, 0, 0]
+            if np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['u']) :
+                if v[0] == 0 : cos[1], cos[2], cos[3] = 1, 1, 1
+                if v[1] == 0 : cos[0], cos[1] = 1, 1
+                if v[1] == col - 1 : cos[3], cos[4] = 1, 1
+
+            elif np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['d']) :
+                if v[0] == row - 1 : cos[1], cos[2], cos[3] = 1, 1, 1
+                if v[1] == 0 : cos[3], cos[4] = 1, 1
+                if v[1] == col - 1 : cos[0], cos[1] = 1, 1
+
+            elif np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['r']) :
+                if v[1] == col - 1 : cos[1], cos[2], cos[3] = 1, 1, 1
+                if v[0] == 0 : cos[0], cos[1] = 1, 1
+                if v[0] == row - 1 : cos[3], cos[4] = 1, 1
+
+            elif np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['l']) :
+                if v[1] == 0 : cos[1], cos[2], cos[3] = 1, 1, 1
+                if v[0] == 0 : cos[3], cos[4] = 1, 1
+                if v[0] == row - 1 : cos[0], cos[1] = 1, 1
+
+
             for bloc in self.bodys :
                 if v == tuple(bloc.pos) :
                     node[v] = INF
                 
                 #가려는 방향이 세 방향으로 막혀있는지 표를 구성
                 u = np.array(bloc.pos) - np.array(v)
-                if np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['u']) and bloc.pos[1] <= v[1]:   #위쪽 세방향
-                    cos_u = np.inner(u, DIRECTION['u']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['u'])) 
-                    cos_r = np.inner(u, DIRECTION['r']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['r']))
-                    cos_l = np.inner(u, DIRECTION['l']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['l']))
-                    
-                    if(cos_u == 0 and cos_l == 1) : cos[0] = 1
-                    if(cos_u == cos_l) : cos[1] = 1
-                    if(cos_u == 1) : cos[2] = 1
-                    if(cos_u == cos_r) : cos[3] = 1
-                    if(cos_u == 0 and cos_r == 1) : cos[4] = 1
+                if u[0] == 0 and  u[1] == 0 :
+                    continue
 
-                elif np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['d']) and bloc.pos[1] >= v[1]:     #아래쪽 세방향
-                    cos_d = np.inner(u, DIRECTION['d']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['d']))
-                    cos_l = np.inner(u, DIRECTION['l']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['l']))
-                    cos_r = np.inner(u, DIRECTION['r']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['r']))
+                if np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['u']) :   #위쪽 세방향
+                    if bloc.pos[1] <= v[1] :
+                        cos_u = np.inner(u, DIRECTION['u']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['u'])) 
+                        cos_r = np.inner(u, DIRECTION['r']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['r']))
+                        cos_l = np.inner(u, DIRECTION['l']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['l']))
+                        
+                        if(cos_u == 0 and cos_l == 1) : cos[0] = 1
+                        if(cos_u == cos_l) : cos[1] = 1
+                        if(cos_u == 1) : cos[2] = 1
+                        if(cos_u == cos_r) : cos[3] = 1
+                        if(cos_u == 0 and cos_r == 1) : cos[4] = 1
 
-                    if(cos_d == 0 and cos_l == 1) : cos[0] = 1
-                    if(cos_d == cos_l) : cos[1] = 1
-                    if(cos_d == 1) : cos[2] = 1
-                    if(cos_d == cos_r) : cos[3] = 1
-                    if(cos_d == 0 and cos_r == 1) : cos[4] = 1
+                elif np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['d']) :     #아래쪽 세방향
+                    if bloc.pos[1] >= v[1] :
+                        cos_d = np.inner(u, DIRECTION['d']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['d']))
+                        cos_l = np.inner(u, DIRECTION['l']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['l']))
+                        cos_r = np.inner(u, DIRECTION['r']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['r']))
 
-                elif np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['r']) and bloc.pos[0] >= v[0]:     #오른쪽 세방향
-                    cos_r = np.inner(u, DIRECTION['r']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['r']))
-                    cos_d = np.inner(u, DIRECTION['d']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['d']))
-                    cos_u = np.inner(u, DIRECTION['u']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['u']))
+                        if(cos_d == 0 and cos_r == 1) : cos[0] = 1
+                        if(cos_d == cos_r) : cos[1] = 1
+                        if(cos_d == 1) : cos[2] = 1
+                        if(cos_d == cos_l) : cos[3] = 1
+                        if(cos_d == 0 and cos_l == 1) : cos[4] = 1
 
-                    if(cos_r == 0 and cos_u == 1) : cos[0] = 1
-                    if(cos_r == cos_u) : cos[1] = 1
-                    if(cos_r == 1) : cos[2] = 1
-                    if(cos_r == cos_d) : cos[3] = 1
-                    if(cos_r == 0 and cos_d == 1) : cos[4] = 1
+                elif np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['r']) :     #오른쪽 세방향
+                    if bloc.pos[0] >= v[0] :
+                        cos_r = np.inner(u, DIRECTION['r']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['r']))
+                        cos_d = np.inner(u, DIRECTION['d']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['d']))
+                        cos_u = np.inner(u, DIRECTION['u']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['u']))
 
-                elif np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['l']) and bloc.pos[0] <= v[0]:     #왼쪽 세방향
-                    cos_l = np.inner(u, DIRECTION['l']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['l']))
-                    cos_u = np.inner(u, DIRECTION['u']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['u']))
-                    cos_d = np.inner(u, DIRECTION['d']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['d']))
+                        if(cos_r == 0 and cos_u == 1) : cos[0] = 1
+                        if(cos_r == cos_u) : cos[1] = 1
+                        if(cos_r == 1) : cos[2] = 1
+                        if(cos_r == cos_d) : cos[3] = 1
+                        if(cos_r == 0 and cos_d == 1) : cos[4] = 1
 
-                    if(cos_l == 0 and cos_u == 1) : cos[0] = 1
-                    if(cos_l == cos_u) : cos[1] = 1
-                    if(cos_l == 1) : cos[2] = 1
-                    if(cos_l == cos_d) : cos[3] = 1
-                    if(cos_l == 0 and cos_d == 1) : cos[4] = 1
-            
+                elif np.array_equal(np.array(v) - np.array(self.head.pos), DIRECTION['l']) :     #왼쪽 세방향
+                    if bloc.pos[0] <= v[0] : 
+                        cos_l = np.inner(u, DIRECTION['l']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['l']))
+                        cos_u = np.inner(u, DIRECTION['u']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['u']))
+                        cos_d = np.inner(u, DIRECTION['d']) / (np.linalg.norm(u) * np.linalg.norm(DIRECTION['d']))
+
+                        if(cos_l == 0 and cos_d == 1) : cos[0] = 1
+                        if(cos_l == cos_d) : cos[1] = 1
+                        if(cos_l == 1) : cos[2] = 1
+                        if(cos_l == cos_u) : cos[3] = 1
+                        if(cos_l == 0 and cos_u == 1) : cos[4] = 1
+
             #세 방향이 막힌 곳은 INF - 1
-            if node[v] != INF and 0 not in cos :
+            n = cos.count(0)
+            if node[v] != INF and n == 0:
                 node[v] = INF - 1
-
-        #모든 방향이 막혔다면 꼬리와 가장 가까운 방향을 선택
 
         next_pos = np.array(min(node, key=node.get))
         next_dir = next_pos - self.head.pos
