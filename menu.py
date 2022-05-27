@@ -326,7 +326,10 @@ class ScoreMenu(Menu):                               # single과 dual 게임 종
             self.game.check_events()
             self.check_input()
             self.game.display.fill(self.game.WHITE)
-            self.game.draw_text("The Winner is %d" %winner, 20, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20, self.game.BLACK)
+            if winner == 0 :
+                self.game.draw_text("Draw", 20, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20, self.game.BLACK)
+            else :
+                self.game.draw_text("The Winner is %d" %winner, 20, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20, self.game.BLACK)
             self.game.draw_text("Restart", 20, self.restartx, self.restarty, self.game.BLACK)
             self.game.draw_text("Return to Main Menu ", 20, self.exitx, self.exity, self.game.BLACK)
             self.draw_cursor(self.game.BLACK)

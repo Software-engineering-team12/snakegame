@@ -229,19 +229,23 @@ class Game():
         headPos = snake1.head.pos
         headPos2 = snake2.head.pos
 
-        # 뱀1이 뱀2에 닿았을 때
-        for x in range(len(snake2.bodys)):
-            if headPos[0] == snake2.bodys[x].pos[0] and headPos[1] == snake2.bodys[x].pos[1]:
-                self.curr_menu = ScoreMenu(self)
-                self.curr_menu.display_winner(2)
-                break
-                
-        # 뱀2이 뱀1에 닿았을 때
-        for x in range(len(snake1.bodys)):
-            if headPos2[0] == snake1.bodys[x].pos[0] and headPos2[1] == snake1.bodys[x].pos[1]:
-                self.curr_menu = ScoreMenu(self)
-                self.curr_menu.display_winner(1)
-                break
+        if headPos[0] == headPos2[0] and headPos[1] == headPos2[1] :
+            self.curr_menu = ScoreMenu(self)
+            self.curr_menu.display_winner(0)
+        else :
+            # 뱀1이 뱀2에 닿았을 때
+            for x in range(len(snake2.bodys)):
+                if headPos[0] == snake2.bodys[x].pos[0] and headPos[1] == snake2.bodys[x].pos[1]:
+                    self.curr_menu = ScoreMenu(self)
+                    self.curr_menu.display_winner(2)
+                    break
+                    
+            # 뱀2이 뱀1에 닿았을 때
+            for x in range(len(snake1.bodys)):
+                if headPos2[0] == snake1.bodys[x].pos[0] and headPos2[1] == snake1.bodys[x].pos[1]:
+                    self.curr_menu = ScoreMenu(self)
+                    self.curr_menu.display_winner(1)
+                    break
 
 
 
