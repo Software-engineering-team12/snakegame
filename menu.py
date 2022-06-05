@@ -322,13 +322,28 @@ class ScoreMenu(Menu):                               # single과 dual 게임 종
 
     def display_winner(self, winner):
         self.run_display = True
+        playerOneImg = pygame.image.load("img/head_right1.png")
+        playerOneImg = pygame.transform.scale(playerOneImg, (400, 400))
+        playerTwoImg = pygame.image.load("img/head_left2.png") 
+        playerTwoImg = pygame.transform.scale(playerTwoImg, (400, 400))
+        if (winner == 0):
+            playerTwoImg = pygame.transform.rotate(playerTwoImg, -90)
+            playerOneImg = pygame.transform.rotate(playerOneImg, 90)
+        elif (winner == 1):
+            playerTwoImg = pygame.transform.rotate(playerTwoImg, -90)
+        else:
+            playerOneImg = pygame.transform.rotate(playerOneImg, 90)
         while self.run_display:
             self.game.check_events()
             self.check_input()
             self.game.display.fill(self.game.WHITE)
             if winner == 0 :
+                self.game.display.blit(playerOneImg, (self.game.WIDTH / 20, self.game.HEIGHT / 5))
+                self.game.display.blit(playerTwoImg, (self.game.WIDTH / 1.5, self.game.HEIGHT / 5))
                 self.game.draw_text("Draw", 20, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20, self.game.BLACK)
             else :
+                self.game.display.blit(playerOneImg, (self.game.WIDTH / 20, self.game.HEIGHT / 5))
+                self.game.display.blit(playerTwoImg, (self.game.WIDTH / 1.5, self.game.HEIGHT / 5))
                 self.game.draw_text("The Winner is %d" %winner, 20, self.game.WIDTH / 2, self.game.HEIGHT / 2 - 20, self.game.BLACK)
             self.game.draw_text("Restart", 20, self.restartx, self.restarty, self.game.BLACK)
             self.game.draw_text("Return to Main Menu ", 20, self.exitx, self.exity, self.game.BLACK)
