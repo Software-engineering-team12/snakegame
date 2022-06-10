@@ -345,7 +345,7 @@ class ScoreMenu(Menu):                               # single과 dual 게임 종
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running, self.playing = False, False
-                    self.curr_menu.run_display = False
+                    self.run_display = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         self.run_display = False
