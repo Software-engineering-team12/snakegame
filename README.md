@@ -15,22 +15,20 @@
 <br>
   
 ## About this game  
-  
-  임포스터가 되어 A+을 훔쳐보세요! 
+
   
   <br>
   
-  이 게임은 널리 알려진 snake game의 일종으로, single play, dual play, auto play 이 3가지 종류의 게임 모드가 있습니다.
   
   This game is a kind of widely known snake game, there are 3 game modes: single play, dual play and auto play.
   
   <br>
   
-  - single play : 가능한 많은 A+를 훔치세요 (steal as many A+s as possible)
+  - single play :steal as many A+s as possible
   
-  - dual play : 다른 플레이어와 A+를 두고 경쟁을 하세요 (Compete with other players for A+)
-  
-  - auto play : 자동 플레이로 편안하게 A+을 훔치세요 (Steal A+ comfortably with auto play)
+  - dual play : Compete with other players for A+
+ 
+  - auto play : Steal A+ comfortably with auto play
   
    <br><br>
   
