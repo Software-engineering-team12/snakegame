@@ -64,6 +64,7 @@ class Game():
                 self.drawGrid()
                 self.snake.draw(self.display)
                 self.apple.draw(self.display)
+                self.in_game_score_display(self.snake)
             
             elif self.dual_playing == True :
                 if self.BACK_KEY:
@@ -82,7 +83,6 @@ class Game():
 
                 self.check_eat_apple(self.snake, self.apple, self.apple2)
                 self.check_eat_apple(self.snake2, self.apple, self.apple2)
-                
                 self.check_snake_hit(self.snake, self.snake2)
 
                 self.display.fill((255, 255, 255))
@@ -128,6 +128,7 @@ class Game():
                 self.drawGrid()
                 self.snake.draw(self.display)
                 self.apple.draw(self.display)
+                self.in_game_score_display(self.snake)
 
             self.window.blit(self.display, (0, 0))
             pygame.display.update()
@@ -182,6 +183,10 @@ class Game():
                             heapq.heappush(openlist, (
                             movecost + abs(next_x - target[0]) + abs(next_y - target[1]), movecost, next_x, next_y))
 
+
+    def in_game_score_display(self, snake):
+        score = len(self.snake.bodys)
+        self.draw_text("The Score is "+str(score), 14, 80, 25, (255, 0, 135))
 
     def new_snake(self):
         self.snake2 = Snake(self, (0, 0), dir=np.array([0, 1]), player=2)
