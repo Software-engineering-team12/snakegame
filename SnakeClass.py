@@ -31,6 +31,7 @@ class Snake:
         self.bodys.append(self.head)
         self.tail = self.bodys[-1]
         self.load_img(self.player)
+        self.last_key = None
 
     # load_img메소드는 snake의 머리, 몸통, 꼬리에 해당하는 이미지파일을 불러온다
     def load_img(self, player):
@@ -57,18 +58,22 @@ class Snake:
 
     # move 메소드에서는 키보드 입력을 받아 뱀을 움직인다.
     def move_1P(self):
-        if self.game.UP_KEY:
+        if self.game.UP_KEY and self.last_key != pygame.K_DOWN:
             self.turns[tuple(self.head.pos[:])] = DIRECTION['u']
             self.key = DIRECTION['u']
-        elif self.game.DOWN_KEY:
+            self.last_key = pygame.K_UP
+        elif self.game.DOWN_KEY and self.last_key != pygame.K_UP:
             self.turns[tuple(self.head.pos[:])] = DIRECTION['d']
             self.key = DIRECTION['d']
-        elif self.game.LEFT_KEY:
+            self.last_key = pygame.K_DOWN
+        elif self.game.LEFT_KEY and self.last_key != pygame.K_RIGHT:
             self.turns[tuple(self.head.pos[:])] = DIRECTION['l']
             self.key = DIRECTION['l']
-        elif self.game.RIGHT_KEY:
+            self.last_key = pygame.K_LEFT
+        elif self.game.RIGHT_KEY and self.last_key != pygame.K_LEFT:
             self.turns[tuple(self.head.pos[:])] = DIRECTION['r']
             self.key = DIRECTION['r']
+            self.last_key = pygame.K_RIGHT
 
         self.move()
 
@@ -130,4 +135,3 @@ class Snake:
         self.tail = self.bodys[-1]
         for i in save_body:
             self.grow()
-
