@@ -1,6 +1,7 @@
 import sys
 import pygame
 import numpy as np
+import os
 
 class Menu():
     def __init__(self, game):
@@ -117,22 +118,33 @@ class MainMenu(Menu):
 
             elif self.state == "Load":
                 save_bodys = []
-                load_file = open('game_file.txt', 'r')
-                load_game = list(load_file.read().split('\n'))
-                load_apple = tuple(map(int, load_game[0].split()))
-                snake_size = int(load_game[1])
-                for i in range(snake_size):
-                    save_bodys.append(list(map(int, load_game[i + 2].split())))
+                if os.path.exists('game_file.txt') == False:
+                    self.game.curr_menu = NoLoadMenu(self.game)
+                    self.game.curr_menu.display_menu()
+                    self.game.reset_keys()
+                else:
+                    load_file = open('game_file.txt', 'r')
+                    if not os.stat('game_file.txt').st_size == 0:
+                        load_game = list(load_file.read().split('\n'))
+                        load_apple = tuple(map(int, load_game[0].split()))
+                        snake_size = int(load_game[1])
+                        for i in range(snake_size):
+                            save_bodys.append(list(map(int, load_game[i + 2].split())))
 
-                self.game.apple.set_position(load_apple)
+                        self.game.apple.set_position(load_apple)
 
-                self.game.snake.reset((self.game.COLUMN / 2, self.game.ROW / 2))
-                self.game.snake.set_body(save_bodys)
-                self.game.playing = True
-                self.game.auto_playing = False
-                self.game.dual_playing = False
-                load_file.close()
-                self.run_display = False
+                        self.game.snake.reset((self.game.COLUMN / 2, self.game.ROW / 2))
+                        self.game.snake.set_body(save_bodys)
+                        self.game.playing = True
+                        self.game.auto_playing = False
+                        self.game.dual_playing = False
+                        load_file.close()
+                        self.run_display = False
+                    else:
+                        load_file.close()
+                        self.game.curr_menu = NoLoadMenu(self.game)
+                        self.game.curr_menu.display_menu()
+                        self.game.reset_keys()
 
             elif self.state == "Ranking":
                 self.game.curr_menu = RankMenu(self.game)
@@ -459,3 +471,28 @@ class RankMenu(Menu):
         score_file.close()
         name_file.close()
         return name, score
+
+class NoLoadMenu    (Menu):
+    def __init__(self, game):
+        Menu.__init__(self, game)
+        self.state = "Menu"
+        self.errorx, self.errory = self.mid_w, self.mid_h-60
+        self.exitx, self.exity = self.mid_w + 220, self.mid_h + 310
+        self.cursor_rect.midtop = (self.exitx + self.offset, self.exity)
+
+    def display_menu(self):
+        self.run_display = True
+        while self.run_display:
+            self.game.display.fill(self.game.BLACK)
+            self.game.draw_text("NO EXISTING SAVE FILES", 30, self.errorx, self.errory, self.game.WHITE)
+            self.game.draw_text("Exit", 20, self.exitx, self.exity, self.game.WHITE)
+            self.draw_cursor(self.game.WHITE)
+            self.blit_screen()
+            self.game.check_events()
+            self.check_input()
+
+    def check_input(self):
+        if self.game.ENTER_KEY:
+            self.game.curr_menu = MainMenu(self.game)
+            self.run_display = False
+            self.game.playing = False
